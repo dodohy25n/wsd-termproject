@@ -3,6 +3,7 @@ package hello.wsd.domain.user.controller;
 
 import hello.wsd.common.util.CookieUtil;
 import hello.wsd.domain.user.dto.LoginRequest;
+import hello.wsd.domain.user.dto.AccessTokenResponse;
 import hello.wsd.domain.user.dto.SignupRequest;
 import hello.wsd.domain.user.dto.TokenResponse;
 import hello.wsd.domain.user.service.AuthService;
@@ -27,27 +28,28 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AccessTokenResponse> login(@RequestBody LoginRequest request) {
         TokenResponse tokenResponse = authService.login(request);
 
-        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(tokenResponse.refreshToken());
+        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(tokenResponse.getRefreshToken());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(tokenResponse);
+                .body(AccessTokenResponse.of(tokenResponse.getAccessToken(), tokenResponse.getExpiresIn()));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<TokenResponse> refresh(
+    public ResponseEntity<AccessTokenResponse> refresh(
             @CookieValue(value = "refreshToken", required = false) String refreshToken
     ) {
         TokenResponse tokenResponse = authService.refresh(refreshToken);
 
-        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(tokenResponse.refreshToken());
+        // RRT 적용
+        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(tokenResponse.getRefreshToken());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(tokenResponse);
+                .body(AccessTokenResponse.of(tokenResponse.getAccessToken(), tokenResponse.getExpiresIn()));
     }
 
     @PostMapping("/logout")

@@ -93,9 +93,11 @@ public class AuthService {
     }
 
     private TokenResponse generateTokenResponse(User user) {
+
         String accessToken = jwtTokenProvider.createAccessToken(
                 user.getId(), user.getUsername(), user.getRole().name()
         );
+
         String refreshToken = jwtTokenProvider.createRefreshToken(
                 user.getId(), user.getUsername(), user.getRole().name()
         );

@@ -1,7 +1,14 @@
 package hello.wsd.domain.user.dto;
 
-public record TokenResponse(
-        String accessToken,
-        String refreshToken,
-        long expiresIn
-) {}
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+public class TokenResponse {
+    private String accessToken;
+    private String refreshToken;
+    private long expiresIn;
+}
