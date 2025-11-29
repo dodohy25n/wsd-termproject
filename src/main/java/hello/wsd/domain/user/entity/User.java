@@ -1,4 +1,4 @@
-package hello.wsd.user.entity;
+package hello.wsd.domain.user.entity;
 
 import hello.wsd.common.entity.BaseEntity;
 import jakarta.persistence.*;

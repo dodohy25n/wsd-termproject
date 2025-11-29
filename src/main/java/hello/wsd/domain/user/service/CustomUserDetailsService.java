@@ -1,9 +1,9 @@
 // src/main/java/hello/wsd/auth/service/CustomUserDetailsService.java
-package hello.wsd.domain.service;
+package hello.wsd.domain.user.service;
 
 import hello.wsd.security.details.CustomUserDetails;
-import hello.wsd.user.entity.User;
-import hello.wsd.user.repository.UserRepository;
+import hello.wsd.domain.user.entity.User;
+import hello.wsd.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

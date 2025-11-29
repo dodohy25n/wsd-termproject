@@ -1,6 +1,6 @@
-package hello.wsd.user.repository;
+package hello.wsd.domain.user.repository;
 
-import hello.wsd.user.entity.User;
+import hello.wsd.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

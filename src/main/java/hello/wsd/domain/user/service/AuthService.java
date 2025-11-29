@@ -1,15 +1,15 @@
 // src/main/java/hello/wsd/auth/service/AuthService.java
-package hello.wsd.domain.service;
+package hello.wsd.domain.user.service;
 
-import hello.wsd.domain.dto.LoginRequest;
-import hello.wsd.domain.dto.SignupRequest;
-import hello.wsd.domain.dto.TokenResponse;
+import hello.wsd.domain.user.dto.LoginRequest;
+import hello.wsd.domain.user.dto.SignupRequest;
+import hello.wsd.domain.user.dto.TokenResponse;
 import hello.wsd.security.jwt.JwtTokenProvider;
 import hello.wsd.security.details.CustomUserDetails;
-import hello.wsd.user.entity.Role;
-import hello.wsd.user.entity.SocialType;
-import hello.wsd.user.entity.User;
-import hello.wsd.user.repository.UserRepository;
+import hello.wsd.domain.user.entity.Role;
+import hello.wsd.domain.user.entity.SocialType;
+import hello.wsd.domain.user.entity.User;
+import hello.wsd.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

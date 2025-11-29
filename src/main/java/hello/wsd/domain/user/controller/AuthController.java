@@ -1,11 +1,11 @@
 // src/main/java/hello/wsd/auth/controller/AuthController.java
-package hello.wsd.domain;
+package hello.wsd.domain.user.controller;
 
-import hello.wsd.domain.dto.LoginRequest;
-import hello.wsd.domain.dto.SignupRequest;
-import hello.wsd.domain.dto.TokenResponse;
-import hello.wsd.domain.service.AuthService;
 import hello.wsd.common.util.CookieUtil;
+import hello.wsd.domain.user.dto.LoginRequest;
+import hello.wsd.domain.user.dto.SignupRequest;
+import hello.wsd.domain.user.dto.TokenResponse;
+import hello.wsd.domain.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;

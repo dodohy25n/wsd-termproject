@@ -1,4 +1,4 @@
-package hello.wsd.domain.service;
+package hello.wsd.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

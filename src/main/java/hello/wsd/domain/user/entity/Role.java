@@ -1,4 +1,4 @@
-package hello.wsd.user.entity;
+package hello.wsd.domain.user.entity;
 
 public enum Role {
     ROLE_CUSTOMER,

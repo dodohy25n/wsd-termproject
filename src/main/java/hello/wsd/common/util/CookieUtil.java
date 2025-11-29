@@ -4,7 +4,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Cookie {
+public class CookieUtil {
 
     // 쿠키 만료 시간 (14일)
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 14 * 24 * 60 * 60;

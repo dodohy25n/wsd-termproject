@@ -1,7 +1,7 @@
 // src/main/java/hello/wsd/auth/object/CustomUserDetails.java
-package hello.wsd.security.object;
+package hello.wsd.security.details;
 
-import hello.wsd.user.entity.User;
+import hello.wsd.domain.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

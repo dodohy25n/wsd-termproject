@@ -1,4 +1,4 @@
-package hello.wsd.common;
+package hello.wsd.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

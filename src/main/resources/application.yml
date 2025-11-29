@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3308/wsd?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: root
-    password: 0000
+    password: "0000"
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   data:
@@ -15,7 +15,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
 
   security:
@@ -64,5 +64,5 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET}
-  access-expiration: 3600000 # 1??
-  refresh-expiration: 1209600000 # 14?
+  access-expiration: 3600000 # 1시간
+  refresh-expiration: 1209600000 # 14일

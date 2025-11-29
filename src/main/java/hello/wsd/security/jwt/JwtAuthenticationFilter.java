@@ -1,5 +1,5 @@
 // src/main/java/hello/wsd/auth/jwt/JwtAuthenticationFilter.java
-package hello.wsd.auth.jwt;
+package hello.wsd.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

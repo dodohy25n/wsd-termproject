@@ -1,8 +1,8 @@
 // src/main/java/hello/wsd/config/SecurityConfig.java
-package hello.wsd.common.config;
+package hello.wsd.security.config;
 
-import hello.wsd.auth.jwt.JwtAuthenticationFilter;
-import hello.wsd.auth.service.CustomUserDetailsService;
+import hello.wsd.security.jwt.JwtAuthenticationFilter;
+import hello.wsd.domain.user.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
