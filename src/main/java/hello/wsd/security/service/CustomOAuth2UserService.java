@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 import java.util.UUID;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
@@ -32,8 +31,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        // 소셜 로그인 API를 통해 유저 정보 가져오기
+        // 리소스 서버에서 받아온 유저 정보 할당
         OAuth2User oAuth2User = super.loadUser(userRequest);
+
         // 어떤 소셜 서비스인지 확인
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
@@ -42,7 +42,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // User 저장 또는 업데이트
         User user = saveOrUpdate(userInfo);
 
-        // 5. PrincipalDetails 반환 (SecurityContext에 저장됨)
+        // PrincipalDetails 반환 (SecurityContext에 저장됨)
         return new PrincipalDetails(user, oAuth2User.getAttributes());
     }
 
@@ -62,7 +62,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String username = userInfo.getProvider() + "_" + userInfo.getProviderId();
 
         User user = userRepository.findByUsername(username)
-                .map(entity -> entity.updateSocialInfo(userInfo.getName())) // 정보 업데이트 (Dirty Checking)
+                .map(entity -> entity.updateSocialInfo(userInfo)) // 소셜 정보 변경 시 DB에 반영 (Dirty Checking)
                 .orElse(User.builder() // 없으면 생성
                         .username(username)
                         .password(UUID.randomUUID().toString()) // 소셜로그인은 비밀번호 불필요하므로 랜덤값

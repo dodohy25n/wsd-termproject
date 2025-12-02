@@ -1,6 +1,7 @@
 package hello.wsd.domain.user.entity;
 
 import hello.wsd.common.entity.BaseEntity;
+import hello.wsd.security.oauth.OAuth2UserInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,6 +16,7 @@ public class User extends BaseEntity {
     private Long id;
 
     // 일반 로그인 & 소셜 로그인 공통 식별자 (이메일)
+    // 일반 로그인 -> 이메일 형식 / 소셜 로그인 -> provider_id
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -24,6 +26,9 @@ public class User extends BaseEntity {
     // 사용자 이름
     @Column(nullable = false)
     private String name;
+
+    @Column(unique = true)
+    private String email; // 소셜 로그인 - 일반 로그인 이메일 중복 불가
 
     // 사용자 전화번호
     @Column(nullable = false)
@@ -50,8 +55,13 @@ public class User extends BaseEntity {
         return user;
     }
 
-    public User updateSocialInfo(String name) {
-        this.name = name;
+    public User updateSocialInfo(OAuth2UserInfo userInfo) {
+        if (userInfo.getName() != null && !userInfo.getName().isEmpty()) {
+            this.name = userInfo.getName();
+        }
+        if (userInfo.getEmail() != null && !userInfo.getEmail().isEmpty()) {
+            this.email = userInfo.getEmail();
+        }
         return this;
     }
 }

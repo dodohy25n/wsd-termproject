@@ -47,7 +47,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         response.addHeader("Set-Cookie", cookieUtil.createRefreshTokenCookie(refreshToken).toString());
 
         // 프론트엔드로 리다이렉트 (Access Token은 쿼리 파라미터로 전달)
-        // 프론트엔드 주소: http://localhost:5173/oauth/callback
         String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:5173/oauth/callback")
                 .queryParam("accessToken", accessToken)
                 .build().toUriString();

@@ -32,12 +32,14 @@ public class AuthService {
 
     @Transactional
     public void signUp(SignupRequest request) {
+
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new IllegalArgumentException("이미 가입된 이메일입니다.");
         }
 
         User user = User.builder()
                 .username(request.getUsername())
+                .email(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .name(request.getName())
                 .phoneNumber(request.getPhoneNumber())
