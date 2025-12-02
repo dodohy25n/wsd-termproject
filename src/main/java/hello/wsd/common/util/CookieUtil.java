@@ -11,7 +11,7 @@ public class CookieUtil {
 
     public ResponseCookie createRefreshTokenCookie(String refreshToken) {
         return ResponseCookie.from("refreshToken", refreshToken)
-                .path("/api/auth")      // 특정 경로에서만 전송
+                .path("/")              // 전체 경로에서 전송
                 .httpOnly(true)         // 자바스크립트 접근 방지 (XSS 방어)
                 // 운영 환경 설정
 //                .secure(true)
@@ -25,11 +25,11 @@ public class CookieUtil {
 
     public ResponseCookie createExpiredCookie(String cookieName) {
         return ResponseCookie.from(cookieName, "")
-                .path("/api/auth")
+                .path("/")
                 .maxAge(0)              // 즉시 만료
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("None")
+                .secure(false)
+                .sameSite("Lax")
                 .build();
     }
 }

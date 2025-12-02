@@ -62,7 +62,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String username = userInfo.getProvider() + "_" + userInfo.getProviderId();
         String email = userInfo.getEmail();
 
-        // 이미 연동된 존재하는 소셜 식별자 -> 업데이트 
+        // 이미 존재하는 소셜 식별자 -> 업데이트
         User user = userRepository.findByUsername(username)
                 .map(entity -> entity.updateSocialInfo(userInfo))
                 .orElse(null);
