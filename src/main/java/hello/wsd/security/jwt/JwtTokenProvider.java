@@ -2,7 +2,6 @@ package hello.wsd.security.jwt;
 
 import hello.wsd.domain.user.entity.Role;
 import hello.wsd.domain.user.entity.User;
-import hello.wsd.security.details.CustomUserDetails;
 import hello.wsd.security.details.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -14,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 

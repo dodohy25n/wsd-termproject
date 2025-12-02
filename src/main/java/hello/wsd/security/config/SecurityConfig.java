@@ -83,8 +83,8 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/","/api/auth/**",  "/reissue", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/api/admin", "/api/admin/**", "/api/admin/activities/**").hasRole("ADMIN")
+                        .requestMatchers("/api/**","/api/auth/**",  "/reissue", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        //.requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
         http.oauth2Login(oauth2 -> oauth2

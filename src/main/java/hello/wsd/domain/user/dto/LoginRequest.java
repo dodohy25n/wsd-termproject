@@ -1,6 +1,5 @@
 package hello.wsd.domain.user.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
