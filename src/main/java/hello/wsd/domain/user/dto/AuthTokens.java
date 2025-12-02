@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class TokenResponse {
+public class AuthTokens {
     private String accessToken;
     private String refreshToken;
     private long expiresIn;

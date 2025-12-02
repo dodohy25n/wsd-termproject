@@ -3,7 +3,7 @@ package hello.wsd.domain.user.service;
 
 import hello.wsd.domain.user.dto.LoginRequest;
 import hello.wsd.domain.user.dto.SignupRequest;
-import hello.wsd.domain.user.dto.TokenResponse;
+import hello.wsd.domain.user.dto.AuthTokens;
 import hello.wsd.security.jwt.JwtTokenProvider;
 import hello.wsd.security.details.CustomUserDetails;
 import hello.wsd.domain.user.entity.Role;
@@ -48,7 +48,7 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenResponse login(LoginRequest request) {
+    public AuthTokens login(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
@@ -60,27 +60,27 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenResponse refresh(String refreshToken) {
-        // 1. 토큰 유효성 검사
+    public AuthTokens refresh(String refreshToken) {
+        // 토큰 유효성 검사
         if (refreshToken == null || !jwtTokenProvider.validateToken(refreshToken)) {
             throw new RuntimeException("유효하지 않은 리프레시 토큰입니다.");
         }
 
-        // 2. 토큰에서 UserId 추출
+        // 토큰에서 UserId 추출
         Long userId = jwtTokenProvider.getUserId(refreshToken);
 
-        // 3. Redis 비교
+        // Redis 비교
         String storedToken = refreshTokenService.getByUserId(userId);
         if (storedToken == null || !storedToken.equals(refreshToken)) {
             refreshTokenService.delete(userId);
             throw new RuntimeException("리프레시 토큰이 만료되었거나 일치하지 않습니다.");
         }
 
-        // 4. 유저 조회 (유일한 DB 조회)
+        // 유저 조회 (유일한 DB 조회)
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // 5. 토큰 재발급 (Rotation)
+        // 토큰 재발급 (Rotation)
         return generateTokenResponse(user);
     }
 
@@ -92,7 +92,7 @@ public class AuthService {
         }
     }
 
-    private TokenResponse generateTokenResponse(User user) {
+    private AuthTokens generateTokenResponse(User user) {
 
         String accessToken = jwtTokenProvider.createAccessToken(
                 user.getId(), user.getUsername(), user.getRole().name()
@@ -104,6 +104,6 @@ public class AuthService {
 
         refreshTokenService.save(user.getId(), refreshToken);
 
-        return new TokenResponse(accessToken, refreshToken, jwtTokenProvider.getAccessTokenExpiresIn());
+        return new AuthTokens(accessToken, refreshToken, jwtTokenProvider.getAccessTokenExpiresIn());
     }
 }

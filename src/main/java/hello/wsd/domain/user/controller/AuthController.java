@@ -3,9 +3,9 @@ package hello.wsd.domain.user.controller;
 
 import hello.wsd.common.util.CookieUtil;
 import hello.wsd.domain.user.dto.LoginRequest;
-import hello.wsd.domain.user.dto.AccessTokenResponse;
+import hello.wsd.domain.user.dto.LoginResponse;
 import hello.wsd.domain.user.dto.SignupRequest;
-import hello.wsd.domain.user.dto.TokenResponse;
+import hello.wsd.domain.user.dto.AuthTokens;
 import hello.wsd.domain.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -28,28 +28,28 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AccessTokenResponse> login(@RequestBody LoginRequest request) {
-        TokenResponse tokenResponse = authService.login(request);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        AuthTokens authTokens = authService.login(request);
 
-        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(tokenResponse.getRefreshToken());
+        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(AccessTokenResponse.of(tokenResponse.getAccessToken(), tokenResponse.getExpiresIn()));
+                .body(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn()));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AccessTokenResponse> refresh(
+    public ResponseEntity<LoginResponse> refresh(
             @CookieValue(value = "refreshToken", required = false) String refreshToken
     ) {
-        TokenResponse tokenResponse = authService.refresh(refreshToken);
+        AuthTokens authTokens = authService.refresh(refreshToken);
 
         // RRT 적용
-        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(tokenResponse.getRefreshToken());
+        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(AccessTokenResponse.of(tokenResponse.getAccessToken(), tokenResponse.getExpiresIn()));
+                .body(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn()));
     }
 
     @PostMapping("/logout")

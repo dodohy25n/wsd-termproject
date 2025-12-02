@@ -1,5 +1,8 @@
 package hello.wsd.security.jwt;
 
+import hello.wsd.domain.user.entity.Role;
+import hello.wsd.domain.user.entity.User;
+import hello.wsd.security.details.CustomUserDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -10,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -70,8 +72,8 @@ public class JwtTokenProvider {
     }
 
     /**
-     * 토큰에서 인증 정보(Authentication) 조회
-     * DB 조회 없이 토큰 내의 정보만으로 UserDetails를 생성합니다.
+     * 토큰에서 인증 정보 조회
+     * DB 조회 없이 토큰 내의 정보만으로 UserDetails 생성
      */
     public Authentication getAuthentication(String token) {
         Claims claims = parseClaims(token);
@@ -80,6 +82,8 @@ public class JwtTokenProvider {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
+        String userId = claims.getSubject();
+        String username = claims.get("username", String.class);
         String role = claims.get(KEY_ROLE, String.class);
 
         // ROLE_ 접두사 처리
@@ -89,8 +93,15 @@ public class JwtTokenProvider {
 
         Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(role));
 
-        // Principal에 UserDetails 객체(User)를 넣어둠
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
+        // 토큰 정보로 가짜 사용자 객체 생성
+        User user = User.builder()
+                .id(Long.parseLong(userId))
+                .username(username)
+                .role(Role.valueOf(role))
+                .password("")
+                .build();
+
+        CustomUserDetails principal = new CustomUserDetails(user);
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }

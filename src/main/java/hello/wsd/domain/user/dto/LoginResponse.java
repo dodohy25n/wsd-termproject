@@ -7,11 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class AccessTokenResponse {
+public class LoginResponse {
     private String accessToken;
     private Long expiresIn;
 
-    public static AccessTokenResponse of(String accessToken, long expiresIn) {
-        return new AccessTokenResponse(accessToken, expiresIn);
+    public static LoginResponse of(String accessToken, long expiresIn) {
+        return new LoginResponse(accessToken, expiresIn);
     }
 }
