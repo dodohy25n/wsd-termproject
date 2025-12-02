@@ -85,11 +85,6 @@ public class JwtTokenProvider {
         String username = claims.get("username", String.class);
         String role = claims.get(KEY_ROLE, String.class);
 
-        // ROLE_ 접두사 처리
-        if (StringUtils.hasText(role) && !role.startsWith("ROLE_")) {
-            role = "ROLE_" + role;
-        }
-
         Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(role));
 
         // 토큰 정보로 가짜 사용자 객체 생성

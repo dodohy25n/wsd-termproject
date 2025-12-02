@@ -31,16 +31,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        // 1. 소셜 로그인 API를 통해 유저 정보 가져오기
-        OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        // 2. 어떤 소셜 서비스인지 확인 (google, kakao 등)
+        // 소셜 로그인 API를 통해 유저 정보 가져오기
+        OAuth2User oAuth2User = super.loadUser(userRequest);
+        // 어떤 소셜 서비스인지 확인
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
-        // 3. 유저 정보 가공
         OAuth2UserInfo userInfo = extractUserInfo(registrationId, oAuth2User.getAttributes());
 
-        // 4. User 엔티티 생성 또는 업데이트
+        // User 저장 또는 업데이트
         User user = saveOrUpdate(userInfo);
 
         // 5. PrincipalDetails 반환 (SecurityContext에 저장됨)
@@ -57,22 +56,24 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User saveOrUpdate(OAuth2UserInfo userInfo) {
+
         // 소셜 식별자로 조회 (없으면 저장, 있으면 업데이트)
         // username 예시: google_12345678, kakao_87654321
         String username = userInfo.getProvider() + "_" + userInfo.getProviderId();
 
-        return userRepository.findByUsername(username)
-                .map(entity -> entity) // 필요시 정보 업데이트 로직 추가 가능
-                .orElseGet(() -> {
-                    return userRepository.save(User.builder()
-                            .username(username)
-                            .password(UUID.randomUUID().toString()) // 소셜로그인은 비밀번호 불필요하므로 랜덤값
-                            .name(userInfo.getName())
-                            .phoneNumber("") // 소셜에서 전화번호 안 주면 빈값 or 추가 입력 필요
-                            .role(Role.ROLE_CUSTOMER)
-                            .socialType(SocialType.valueOf(userInfo.getProvider().toUpperCase()))
-                            .socialId(userInfo.getProviderId())
-                            .build());
-                });
+        User user = userRepository.findByUsername(username)
+                .map(entity -> entity.updateSocialInfo(userInfo.getName())) // 정보 업데이트 (Dirty Checking)
+                .orElse(User.builder() // 없으면 생성
+                        .username(username)
+                        .password(UUID.randomUUID().toString()) // 소셜로그인은 비밀번호 불필요하므로 랜덤값
+                        .name(userInfo.getName())
+                        .phoneNumber("")
+                        .role(Role.ROLE_CUSTOMER)
+                        .socialType(SocialType.valueOf(userInfo.getProvider().toUpperCase()))
+                        .socialId(userInfo.getProviderId())
+                        .build());
+
+        return userRepository.save(user);
+
     }
 }

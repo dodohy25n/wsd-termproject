@@ -49,4 +49,9 @@ public class User extends BaseEntity {
         user.role = role;
         return user;
     }
+
+    public User updateSocialInfo(String name) {
+        this.name = name;
+        return this;
+    }
 }
