@@ -60,20 +60,32 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // 소셜 식별자로 조회 (없으면 저장, 있으면 업데이트)
         // username 예시: google_12345678, kakao_87654321
         String username = userInfo.getProvider() + "_" + userInfo.getProviderId();
+        String email = userInfo.getEmail();
 
+        // 이미 연동된 존재하는 소셜 식별자 -> 업데이트 
         User user = userRepository.findByUsername(username)
-                .map(entity -> entity.updateSocialInfo(userInfo)) // 소셜 정보 변경 시 DB에 반영 (Dirty Checking)
-                .orElse(User.builder() // 없으면 생성
-                        .username(username)
-                        .password(UUID.randomUUID().toString()) // 소셜로그인은 비밀번호 불필요하므로 랜덤값
-                        .name(userInfo.getName())
-                        .phoneNumber("")
-                        .role(Role.ROLE_CUSTOMER)
-                        .socialType(SocialType.valueOf(userInfo.getProvider().toUpperCase()))
-                        .socialId(userInfo.getProviderId())
-                        .build());
+                .map(entity -> entity.updateSocialInfo(userInfo))
+                .orElse(null);
+        
+        if (user != null) {
+            return userRepository.save(user);
+        }
 
-        return userRepository.save(user);
+        // 같은 이메일 일반 회원 존재 -> 소셜 회원 가입 차단
+        if (email != null && userRepository.existsByEmail(email)) {
+            throw new OAuth2AuthenticationException("이미 가입된 이메일입니다. 해당 계정으로 로그인해주세요.");
+        }
 
+        // 신규 회원가입
+        return userRepository.save(User.builder()
+                .username(username)
+                .email(email) // 이메일 저장
+                .password(UUID.randomUUID().toString())
+                .name(userInfo.getName())
+                .phoneNumber("")
+                .role(Role.ROLE_CUSTOMER)
+                .socialType(SocialType.valueOf(userInfo.getProvider().toUpperCase()))
+                .socialId(userInfo.getProviderId())
+                .build());
     }
 }

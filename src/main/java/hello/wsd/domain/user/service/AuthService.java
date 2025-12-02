@@ -6,7 +6,6 @@ import hello.wsd.domain.user.dto.SignupRequest;
 import hello.wsd.domain.user.dto.AuthTokens;
 import hello.wsd.security.details.PrincipalDetails;
 import hello.wsd.security.jwt.JwtTokenProvider;
-import hello.wsd.security.details.CustomUserDetails;
 import hello.wsd.domain.user.entity.Role;
 import hello.wsd.domain.user.entity.SocialType;
 import hello.wsd.domain.user.entity.User;

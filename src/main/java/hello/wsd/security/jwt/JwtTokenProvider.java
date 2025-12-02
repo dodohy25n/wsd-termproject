@@ -95,11 +95,9 @@ public class JwtTokenProvider {
                 .password("")
                 .build();
 
-        // 일반 사용자 인증 객체 생성
+        // 일반/소셜 공통 사용자 인증 객체 생성
         PrincipalDetails principal = new PrincipalDetails(user);
-
-        // todo: 소셜 사용자 인증 객체 생성
-
+        
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
