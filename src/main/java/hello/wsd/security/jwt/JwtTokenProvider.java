@@ -3,6 +3,7 @@ package hello.wsd.security.jwt;
 import hello.wsd.domain.user.entity.Role;
 import hello.wsd.domain.user.entity.User;
 import hello.wsd.security.details.CustomUserDetails;
+import hello.wsd.security.details.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -101,7 +102,10 @@ public class JwtTokenProvider {
                 .password("")
                 .build();
 
-        CustomUserDetails principal = new CustomUserDetails(user);
+        // 일반 사용자 인증 객체 생성
+        PrincipalDetails principal = new PrincipalDetails(user);
+
+        // todo: 소셜 사용자 인증 객체 생성
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }

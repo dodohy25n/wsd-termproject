@@ -4,6 +4,7 @@ package hello.wsd.domain.user.service;
 import hello.wsd.domain.user.dto.LoginRequest;
 import hello.wsd.domain.user.dto.SignupRequest;
 import hello.wsd.domain.user.dto.AuthTokens;
+import hello.wsd.security.details.PrincipalDetails;
 import hello.wsd.security.jwt.JwtTokenProvider;
 import hello.wsd.security.details.CustomUserDetails;
 import hello.wsd.domain.user.entity.Role;
@@ -53,7 +54,7 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
-        CustomUserDetails principal = (CustomUserDetails) authentication.getPrincipal();
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         User user = principal.getUser();
 
         return generateTokenResponse(user);
