@@ -1,11 +1,10 @@
 // src/main/java/hello/wsd/auth/service/CustomUserDetailsService.java
-package hello.wsd.domain.user.service;
+package hello.wsd.security.service;
 
-import hello.wsd.security.details.CustomUserDetails;
 import hello.wsd.domain.user.entity.User;
 import hello.wsd.domain.user.repository.UserRepository;
+import hello.wsd.security.details.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,9 +16,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public PrincipalDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new CustomUserDetails(user);
+        return new PrincipalDetails(user);
     }
 }

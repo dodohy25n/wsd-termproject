@@ -1,8 +1,10 @@
 // src/main/java/hello/wsd/config/SecurityConfig.java
 package hello.wsd.security.config;
 
+import hello.wsd.security.handler.OAuth2LoginSuccessHandler;
+import hello.wsd.security.service.CustomOAuth2UserService;
+import hello.wsd.security.service.CustomUserDetailsService;
 import hello.wsd.security.jwt.JwtAuthenticationFilter;
-import hello.wsd.domain.user.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,8 +29,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -58,19 +61,40 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable);
+        // csrf disable
+        http
+                .csrf((auth) -> auth.disable());
 
-        http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/**", "/api/**").permitAll()
-                .anyRequest().authenticated()
+        // From 로그인 방식 disable
+        http
+                .formLogin((auth) -> auth.disable());
+
+        // http basic 인증 방식 disable
+        http
+                .httpBasic((auth) -> auth.disable());
+
+        // 세션 설정
+        http
+                .sessionManagement((session) -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        // CORS 설정
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
+        //경로별 인가 작업
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/","/api/login",  "/reissue", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/admin", "/api/admin/**", "/api/admin/activities/**").hasRole("ADMIN")
+                        .anyRequest().authenticated());
+
+        http.oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService) // 유저 정보 로드 서비스
+                        )
+                        .successHandler(oAuth2LoginSuccessHandler) // 로그인 성공 시 핸들러
         );
-
-        // OAuth2 로그인은 나중에 붙일 예정
-        // http.oauth2Login(...);
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

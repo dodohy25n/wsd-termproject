@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.util.Collections;
@@ -80,6 +81,11 @@ public class JwtTokenProvider {
         }
 
         String role = claims.get(KEY_ROLE, String.class);
+
+        // ROLE_ 접두사 처리
+        if (StringUtils.hasText(role) && !role.startsWith("ROLE_")) {
+            role = "ROLE_" + role;
+        }
 
         Set<GrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(role));
 
