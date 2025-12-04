@@ -10,7 +10,6 @@ import hello.wsd.security.oauth.GoogleOAuth2UserInfo;
 import hello.wsd.security.oauth.KakaoOAuth2UserInfo;
 import hello.wsd.security.oauth.OAuth2UserInfo;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -77,15 +75,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         // 신규 회원가입
-        return userRepository.save(User.builder()
-                .username(username)
-                .email(email) // 이메일 저장
-                .password(UUID.randomUUID().toString())
-                .name(userInfo.getName())
-                .phoneNumber("")
-                .role(Role.ROLE_CUSTOMER)
-                .socialType(SocialType.valueOf(userInfo.getProvider().toUpperCase()))
-                .socialId(userInfo.getProviderId())
-                .build());
+        User newSocialUser = User.create(username, null, email, userInfo.getName(), null, Role.ROLE_CUSTOMER, SocialType.valueOf(userInfo.getProvider().toUpperCase()), userInfo.getProviderId());
+        return userRepository.save(newSocialUser);
     }
 }

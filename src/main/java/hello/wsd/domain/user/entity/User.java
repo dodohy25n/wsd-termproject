@@ -38,23 +38,28 @@ public class User extends BaseEntity {
 
     // 권한 (USER, ADMIN)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
-    // 소셜 로그인 정보 (일반 로그인은 null or NONE)
+    // 소셜 로그인 정보
     @Enumerated(EnumType.STRING)
-    private SocialType socialType;
+    @Builder.Default
+    private SocialType socialType = SocialType.LOCAL;
 
     // 소셜 식별 값 (예: 카카오의 회원번호)
     private String socialId;
 
-    public static User create(String username, String encode, String name, String phoneNumber, Role role) {
-        User user = new User();
-        user.username = username;
-        user.password = encode;
-        user.name = name;
-        user.phoneNumber = phoneNumber;
-        user.role = role;
-        return user;
+    public static User create(String username, String password, String email, String name, String phoneNumber, Role role, SocialType socialType, String socialId) {
+        return User.builder()
+                .username(username)
+                .password(password)
+                .email(email)
+                .name(name)
+                .phoneNumber(phoneNumber)
+                .role(role)
+                .socialType(socialType)
+                .socialId(socialId)
+                .build();
     }
 
     public User updateSocialInfo(OAuth2UserInfo userInfo) {

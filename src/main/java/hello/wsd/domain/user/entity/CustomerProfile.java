@@ -20,6 +20,6 @@ public class CustomerProfile {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "univiersity_id")
+    @JoinColumn(name = "university_id")
     private University university;
 }

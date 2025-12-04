@@ -1,6 +1,5 @@
 package hello.wsd.domain.user.entity;
 
-import hello.wsd.affliation.entity.University;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,5 +25,6 @@ public class OwnerProfile {
     // 승인 상태
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Builder.Default // 빌더 패턴 생성에서도 기본값 적용
     private VerificationStatus verificationStatus =VerificationStatus.PENDING;
 }
