@@ -7,12 +7,13 @@ import lombok.*;
 
 @Entity
 @Getter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-@AllArgsConstructor
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     // 일반 로그인 & 소셜 로그인 공통 식별자 (이메일)
@@ -23,12 +24,13 @@ public class User extends BaseEntity {
     // 일반 로그인용 (소셜 로그인 사용자는 null)
     private String password;
 
+    // 소셜 로그인 - 일반 로그인 이메일 중복 불가
+    @Column(unique = true)
+    private String email;
+
     // 사용자 이름
     @Column(nullable = false)
     private String name;
-
-    @Column(unique = true)
-    private String email; // 소셜 로그인 - 일반 로그인 이메일 중복 불가
 
     // 사용자 전화번호
     @Column(nullable = false)
