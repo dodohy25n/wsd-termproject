@@ -1,14 +1,17 @@
 // src/main/java/hello/wsd/auth/service/AuthService.java
 package hello.wsd.domain.user.service;
 
+import hello.wsd.affliation.entity.University;
+import hello.wsd.affliation.repository.UniversityRepository;
+import hello.wsd.domain.user.dto.CompleteSocialSignupRequest;
 import hello.wsd.domain.user.dto.LoginRequest;
 import hello.wsd.domain.user.dto.SignupRequest;
 import hello.wsd.domain.user.dto.AuthTokens;
+import hello.wsd.domain.user.entity.*;
+import hello.wsd.domain.user.repository.CustomerProfileRepository;
+import hello.wsd.domain.user.repository.OwnerProfileRepository;
 import hello.wsd.security.details.PrincipalDetails;
 import hello.wsd.security.jwt.JwtTokenProvider;
-import hello.wsd.domain.user.entity.Role;
-import hello.wsd.domain.user.entity.SocialType;
-import hello.wsd.domain.user.entity.User;
 import hello.wsd.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,25 +31,26 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenService refreshTokenService;
+    private final OwnerProfileRepository ownerProfileRepository;
+    private final CustomerProfileRepository customerProfileRepository;
+    private final UniversityRepository universityRepository;
 
     @Transactional
     public void signUp(SignupRequest request) {
 
-        if (userRepository.existsByUsername(request.getUsername())) {
+        if (userRepository.existsByUsername(request.getEmail())) {
             throw new IllegalArgumentException("이미 가입된 이메일입니다.");
         }
 
-        User user = User.builder()
-                .username(request.getUsername())
-                .email(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .name(request.getName())
-                .phoneNumber(request.getPhoneNumber())
-                .role(Role.ROLE_CUSTOMER)
-                .socialType(SocialType.LOCAL)
-                .build();
-
+        User user = User.create(request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getEmail(), request.getName(), request.getPhoneNumber(), request.getRole(), SocialType.LOCAL, null);
         userRepository.save(user);
+
+        // 역할에 따른 프로필 저장
+        if (request.getRole() == Role.ROLE_CUSTOMER) {
+            createCustomerProfile(user, request.getUniversityId());
+        } else if (request.getRole() == Role.ROLE_OWNER) {
+            createOwnerProfile(user, request.getBusinessNumber());
+        }
     }
 
     @Transactional
@@ -92,6 +96,40 @@ public class AuthService {
             Long userId = jwtTokenProvider.getUserId(refreshToken);
             refreshTokenService.delete(userId);
         }
+    }
+
+    public AuthTokens completeSocialSignup(Long userId, CompleteSocialSignupRequest request) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        if (user.getRole() != Role.ROLE_GUEST) {
+            throw new IllegalStateException("이미 가입 절차가 완료된 회원입니다.");
+        }
+
+        user.completeInsufficientInfo(request.getRole(), request.getPhoneNumber());
+
+        if (request.getRole() == Role.ROLE_CUSTOMER) {
+            createCustomerProfile(user, request.getUniversityId());
+        } else if (request.getRole() == Role.ROLE_OWNER) {
+            createOwnerProfile(user, request.getBusinessNumber());
+        }
+
+        // 변경된 Role로 토큰 재발급
+        return generateTokenResponse(user);
+    }
+
+    private void createCustomerProfile(User user, Long universityId) {
+        University university = universityRepository.findById(universityId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대학입니다."));
+
+        CustomerProfile profile = CustomerProfile.create(user, university);
+        customerProfileRepository.save(profile);
+    }
+
+    private void createOwnerProfile(User user, String businessNumber) {
+        OwnerProfile profile = OwnerProfile.create(user, businessNumber);
+        ownerProfileRepository.save(profile);
     }
 
     private AuthTokens generateTokenResponse(User user) {

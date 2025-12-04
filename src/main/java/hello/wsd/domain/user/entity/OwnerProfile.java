@@ -27,4 +27,12 @@ public class OwnerProfile {
     @Enumerated(EnumType.STRING)
     @Builder.Default // 빌더 패턴 생성에서도 기본값 적용
     private VerificationStatus verificationStatus =VerificationStatus.PENDING;
+
+    public static OwnerProfile create(User user, String businessNumber) {
+        return OwnerProfile.builder()
+                .user(user)
+                .businessNumber(businessNumber)
+                .verificationStatus(VerificationStatus.PENDING)
+                .build();
+    }
 }

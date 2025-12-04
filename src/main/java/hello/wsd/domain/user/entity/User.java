@@ -33,7 +33,6 @@ public class User extends BaseEntity {
     private String name;
 
     // 사용자 전화번호
-    @Column(nullable = false)
     private String phoneNumber;
 
     // 권한 (USER, ADMIN)
@@ -60,6 +59,12 @@ public class User extends BaseEntity {
                 .socialType(socialType)
                 .socialId(socialId)
                 .build();
+    }
+
+    // 소셜 가입 후 부족한 정보 완성 -> ROLE_GUEST에서 승격
+    public void completeInsufficientInfo(Role role, String phoneNumber) {
+        this.role = role;
+        this.phoneNumber = phoneNumber;
     }
 
     public User updateSocialInfo(OAuth2UserInfo userInfo) {

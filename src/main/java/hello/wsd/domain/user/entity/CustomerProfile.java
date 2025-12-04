@@ -22,4 +22,11 @@ public class CustomerProfile {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "university_id")
     private University university;
+
+    public static CustomerProfile create(User user, University university) {
+        return CustomerProfile.builder()
+                .user(user)
+                .university(university)
+                .build();
+    }
 }

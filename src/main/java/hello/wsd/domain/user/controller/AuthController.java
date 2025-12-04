@@ -2,10 +2,7 @@
 package hello.wsd.domain.user.controller;
 
 import hello.wsd.common.util.CookieUtil;
-import hello.wsd.domain.user.dto.LoginRequest;
-import hello.wsd.domain.user.dto.LoginResponse;
-import hello.wsd.domain.user.dto.SignupRequest;
-import hello.wsd.domain.user.dto.AuthTokens;
+import hello.wsd.domain.user.dto.*;
 import hello.wsd.domain.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -63,5 +60,12 @@ public class AuthController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
                 .build();
+    }
+
+    @PostMapping("/complete-social-signup")
+    public ResponseEntity<AuthTokens> completeSocialSignup(Long userId, CompleteSocialSignupRequest request) {
+        AuthTokens authTokens = authService.completeSocialSignup(userId, request);
+        return ResponseEntity.ok()
+                .body(authTokens);
     }
 }
