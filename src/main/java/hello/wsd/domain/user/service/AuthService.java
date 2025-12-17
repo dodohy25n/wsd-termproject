@@ -1,6 +1,7 @@
 // src/main/java/hello/wsd/auth/service/AuthService.java
 package hello.wsd.domain.user.service;
 
+import com.google.firebase.auth.FirebaseToken;
 import hello.wsd.domain.affliation.entity.University;
 import hello.wsd.domain.affliation.repository.UniversityRepository;
 import hello.wsd.domain.user.dto.CompleteSocialSignupRequest;
@@ -13,6 +14,7 @@ import hello.wsd.domain.user.repository.OwnerProfileRepository;
 import hello.wsd.security.details.PrincipalDetails;
 import hello.wsd.security.jwt.JwtTokenProvider;
 import hello.wsd.domain.user.repository.UserRepository;
+import hello.wsd.security.service.FirebaseAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +36,7 @@ public class AuthService {
     private final OwnerProfileRepository ownerProfileRepository;
     private final CustomerProfileRepository customerProfileRepository;
     private final UniversityRepository universityRepository;
+    private final FirebaseAuthService firebaseAuthService;
 
     @Transactional
     public void signUp(SignupRequest request) {
@@ -42,7 +45,8 @@ public class AuthService {
             throw new IllegalArgumentException("이미 가입된 이메일입니다.");
         }
 
-        User user = User.create(request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getEmail(), request.getName(), request.getPhoneNumber(), request.getRole(), SocialType.LOCAL, null);
+        User user = User.create(request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getEmail(),
+                request.getName(), request.getPhoneNumber(), request.getRole(), SocialType.LOCAL, null);
         userRepository.save(user);
 
         // 역할에 따른 프로필 저장
@@ -56,11 +60,39 @@ public class AuthService {
     @Transactional
     public AuthTokens login(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         User user = principal.getUser();
+
+        return generateTokenResponse(user);
+    }
+
+    @Transactional
+    public AuthTokens loginByFirebase(String firebaseToken) {
+        FirebaseToken decodedToken = firebaseAuthService.verifyToken(firebaseToken);
+        String uid = decodedToken.getUid();
+        String email = decodedToken.getEmail();
+        String name = decodedToken.getName();
+
+        // Firebase UID를 username으로 사용 (또는 email)
+        // 여기서는 소셜 로그인 규칙에 맞춰 "firebase_{uid}" 형태 권장
+        String username = "firebase_" + uid;
+
+        User user = userRepository.findByUsername(username)
+                .orElseGet(() -> {
+                    // 신규 회원 가입
+                    User newUser = User.create(
+                            username,
+                            null,
+                            email,
+                            name != null ? name : "Firebase User",
+                            null,
+                            Role.ROLE_GUEST,
+                            SocialType.FIREBASE,
+                            uid);
+                    return userRepository.save(newUser);
+                });
 
         return generateTokenResponse(user);
     }
@@ -98,6 +130,7 @@ public class AuthService {
         }
     }
 
+    @Transactional
     public AuthTokens completeSocialSignup(Long userId, CompleteSocialSignupRequest request) {
 
         User user = userRepository.findById(userId)
@@ -120,11 +153,16 @@ public class AuthService {
     }
 
     private void createCustomerProfile(User user, Long universityId) {
-        University university = universityRepository.findById(universityId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대학입니다."));
+        if (universityId != null) {
+            University university = universityRepository.findById(universityId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대학입니다."));
+            CustomerProfile profile = CustomerProfile.create(user, university);
+            customerProfileRepository.save(profile);
+        } else {
+            // 대학생 아닌 고객 가입
+            CustomerProfile profile = CustomerProfile.create(user);
+            customerProfileRepository.save(profile);
+        }
 
-        CustomerProfile profile = CustomerProfile.create(user, university);
-        customerProfileRepository.save(profile);
     }
 
     private void createOwnerProfile(User user, String businessNumber) {
@@ -135,12 +173,10 @@ public class AuthService {
     private AuthTokens generateTokenResponse(User user) {
 
         String accessToken = jwtTokenProvider.createAccessToken(
-                user.getId(), user.getUsername(), user.getRole().name()
-        );
+                user.getId(), user.getUsername(), user.getRole().name());
 
         String refreshToken = jwtTokenProvider.createRefreshToken(
-                user.getId(), user.getUsername(), user.getRole().name()
-        );
+                user.getId(), user.getUsername(), user.getRole().name());
 
         refreshTokenService.save(user.getId(), refreshToken);
 

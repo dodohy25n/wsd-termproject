@@ -23,6 +23,13 @@ public class CustomerProfile {
     @JoinColumn(name = "university_id")
     private University university;
 
+    public static CustomerProfile create(User user) {
+        return CustomerProfile.builder()
+                .user(user)
+                .university(null)
+                .build();
+    }
+
     public static CustomerProfile create(User user, University university) {
         return CustomerProfile.builder()
                 .user(user)

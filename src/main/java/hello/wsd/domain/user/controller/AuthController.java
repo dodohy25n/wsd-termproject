@@ -1,4 +1,3 @@
-// src/main/java/hello/wsd/auth/controller/AuthController.java
 package hello.wsd.domain.user.controller;
 
 import hello.wsd.common.util.CookieUtil;
@@ -9,6 +8,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -35,10 +36,21 @@ public class AuthController {
                 .body(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn()));
     }
 
+    @PostMapping("/firebase")
+    public ResponseEntity<LoginResponse> loginByFirebase(@RequestBody Map<String, String> payload) {
+        String token = payload.get("token");
+        AuthTokens authTokens = authService.loginByFirebase(token);
+
+        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                .body(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn()));
+    }
+
     @PostMapping("/refresh")
     public ResponseEntity<LoginResponse> refresh(
-            @CookieValue(value = "refreshToken", required = false) String refreshToken
-    ) {
+            @CookieValue(value = "refreshToken", required = false) String refreshToken) {
         AuthTokens authTokens = authService.refresh(refreshToken);
 
         // RRT 적용
@@ -51,8 +63,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-            @CookieValue(value = "refreshToken", required = false) String refreshToken
-    ) {
+            @CookieValue(value = "refreshToken", required = false) String refreshToken) {
         authService.logout(refreshToken);
 
         ResponseCookie deleteCookie = cookieUtil.createExpiredCookie("refreshToken");
