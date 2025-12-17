@@ -1,6 +1,6 @@
 package hello.wsd.domain.user.entity;
 
-import hello.wsd.affliation.entity.University;
+import hello.wsd.domain.affliation.entity.University;
 import jakarta.persistence.*;
 import lombok.*;
 

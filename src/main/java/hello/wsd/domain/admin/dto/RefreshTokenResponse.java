@@ -1,4 +1,4 @@
-package hello.wsd.admin.dto;
+package hello.wsd.domain.admin.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

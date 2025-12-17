@@ -1,7 +1,7 @@
-package hello.wsd.admin.controller;
+package hello.wsd.domain.admin.controller;
 
-import hello.wsd.admin.dto.RefreshTokenResponse;
-import hello.wsd.admin.service.AuthManageService;
+import hello.wsd.domain.admin.dto.RefreshTokenResponse;
+import hello.wsd.domain.admin.service.AuthManageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

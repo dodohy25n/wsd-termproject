@@ -1,8 +1,8 @@
 // src/main/java/hello/wsd/auth/service/AuthService.java
 package hello.wsd.domain.user.service;
 
-import hello.wsd.affliation.entity.University;
-import hello.wsd.affliation.repository.UniversityRepository;
+import hello.wsd.domain.affliation.entity.University;
+import hello.wsd.domain.affliation.repository.UniversityRepository;
 import hello.wsd.domain.user.dto.CompleteSocialSignupRequest;
 import hello.wsd.domain.user.dto.LoginRequest;
 import hello.wsd.domain.user.dto.SignupRequest;

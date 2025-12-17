@@ -1,6 +1,6 @@
-package hello.wsd.admin.service;
+package hello.wsd.domain.admin.service;
 
-import hello.wsd.admin.dto.RefreshTokenResponse;
+import hello.wsd.domain.admin.dto.RefreshTokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
