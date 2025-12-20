@@ -1,10 +1,13 @@
 package hello.wsd.domain.user.controller;
 
+import com.google.protobuf.Api;
+import hello.wsd.common.response.ApiResponse;
 import hello.wsd.common.util.CookieUtil;
 import hello.wsd.domain.user.dto.*;
 import hello.wsd.domain.user.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,24 +23,24 @@ public class AuthController {
     private final CookieUtil cookieUtil;
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> signUp(@RequestBody SignupRequest request) {
-        authService.signUp(request);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ApiResponse<Long>> signUp(@RequestBody SignupRequest request) {
+        Long id = authService.signUp(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(id));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest request) {
         AuthTokens authTokens = authService.login(request);
 
         ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn()));
+                .body(ApiResponse.success(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn())));
     }
 
     @PostMapping("/firebase")
-    public ResponseEntity<LoginResponse> loginByFirebase(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<ApiResponse<LoginResponse>> loginByFirebase(@RequestBody Map<String, String> payload) {
         String token = payload.get("token");
         AuthTokens authTokens = authService.loginByFirebase(token);
 
@@ -45,11 +48,11 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn()));
+                .body(ApiResponse.success(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn())));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<LoginResponse> refresh(
+    public ResponseEntity<ApiResponse<LoginResponse>> refresh(
             @CookieValue(value = "refreshToken", required = false) String refreshToken) {
         AuthTokens authTokens = authService.refresh(refreshToken);
 
@@ -58,11 +61,11 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn()));
+                .body(ApiResponse.success(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn())));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(
+    public ResponseEntity<ApiResponse<Void>> logout(
             @CookieValue(value = "refreshToken", required = false) String refreshToken) {
         authService.logout(refreshToken);
 
@@ -70,13 +73,17 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
-                .build();
+                .body(ApiResponse.success(null));
     }
 
     @PostMapping("/complete-social-signup")
-    public ResponseEntity<AuthTokens> completeSocialSignup(Long userId, CompleteSocialSignupRequest request) {
+    public ResponseEntity<ApiResponse<LoginResponse>> completeSocialSignup(Long userId, CompleteSocialSignupRequest request) {
         AuthTokens authTokens = authService.completeSocialSignup(userId, request);
+
+        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
+
         return ResponseEntity.ok()
-                .body(authTokens);
+                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                .body(ApiResponse.success(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn())));
     }
 }

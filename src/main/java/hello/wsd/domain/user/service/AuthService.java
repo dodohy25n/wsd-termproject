@@ -2,21 +2,24 @@
 package hello.wsd.domain.user.service;
 
 import com.google.firebase.auth.FirebaseToken;
+import hello.wsd.common.exception.CustomException;
+import hello.wsd.common.exception.ErrorCode;
 import hello.wsd.domain.affliation.entity.University;
 import hello.wsd.domain.affliation.repository.UniversityRepository;
+import hello.wsd.domain.user.dto.AuthTokens;
 import hello.wsd.domain.user.dto.CompleteSocialSignupRequest;
 import hello.wsd.domain.user.dto.LoginRequest;
 import hello.wsd.domain.user.dto.SignupRequest;
-import hello.wsd.domain.user.dto.AuthTokens;
 import hello.wsd.domain.user.entity.*;
 import hello.wsd.domain.user.repository.CustomerProfileRepository;
 import hello.wsd.domain.user.repository.OwnerProfileRepository;
+import hello.wsd.domain.user.repository.UserRepository;
 import hello.wsd.security.details.PrincipalDetails;
 import hello.wsd.security.jwt.JwtTokenProvider;
-import hello.wsd.domain.user.repository.UserRepository;
 import hello.wsd.security.service.FirebaseAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,15 +42,16 @@ public class AuthService {
     private final FirebaseAuthService firebaseAuthService;
 
     @Transactional
-    public void signUp(SignupRequest request) {
+    public Long signUp(SignupRequest request) {
 
         if (userRepository.existsByUsername(request.getEmail())) {
-            throw new IllegalArgumentException("이미 가입된 이메일입니다.");
+            throw new CustomException(ErrorCode.DUPLICATE_RESOURCE, "이미 가입된 이메일 입니다.");
         }
 
         User user = User.create(request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getEmail(),
                 request.getName(), request.getPhoneNumber(), request.getRole(), SocialType.LOCAL, null);
-        userRepository.save(user);
+
+        Long id = userRepository.save(user).getId();
 
         // 역할에 따른 프로필 저장
         if (request.getRole() == Role.ROLE_CUSTOMER) {
@@ -55,25 +59,36 @@ public class AuthService {
         } else if (request.getRole() == Role.ROLE_OWNER) {
             createOwnerProfile(user, request.getBusinessNumber());
         }
+
+        return id;
     }
 
     @Transactional
     public AuthTokens login(LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        User user = principal.getUser();
+            PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+            User user = principal.getUser();
 
-        return generateTokenResponse(user);
+            return generateTokenResponse(user);
+        } catch (BadCredentialsException e) {
+            throw new CustomException(ErrorCode.LOGIN_FAILED);
+        }
     }
 
     @Transactional
     public AuthTokens loginByFirebase(String firebaseToken) {
         FirebaseToken decodedToken = firebaseAuthService.verifyToken(firebaseToken);
+
         String uid = decodedToken.getUid();
         String email = decodedToken.getEmail();
         String name = decodedToken.getName();
+
+        if (email == null || email.isBlank()) {
+            throw new CustomException(ErrorCode.BAD_REQUEST, "소셜 계정에 이메일 정보가 없습니다.");
+        }
 
         // Firebase UID를 username으로 사용 (또는 email)
         // 여기서는 소셜 로그인 규칙에 맞춰 "firebase_{uid}" 형태 권장
@@ -101,7 +116,7 @@ public class AuthService {
     public AuthTokens refresh(String refreshToken) {
         // 토큰 유효성 검사
         if (refreshToken == null || !jwtTokenProvider.validateToken(refreshToken)) {
-            throw new RuntimeException("유효하지 않은 리프레시 토큰입니다.");
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "유효하지 않은 리프레시 토큰입니다.");
         }
 
         // 토큰에서 UserId 추출
@@ -111,12 +126,12 @@ public class AuthService {
         String storedToken = refreshTokenService.getByUserId(userId);
         if (storedToken == null || !storedToken.equals(refreshToken)) {
             refreshTokenService.delete(userId);
-            throw new RuntimeException("리프레시 토큰이 만료되었거나 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.INVALID_TOKEN, "리프레시 토큰이 만료되었거나 일치하지 않습니다.");
         }
 
         // 유저 조회 (유일한 DB 조회)
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 토큰 재발급 (Rotation)
         return generateTokenResponse(user);
@@ -134,10 +149,10 @@ public class AuthService {
     public AuthTokens completeSocialSignup(Long userId, CompleteSocialSignupRequest request) {
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         if (user.getRole() != Role.ROLE_GUEST) {
-            throw new IllegalStateException("이미 가입 절차가 완료된 회원입니다.");
+            throw new CustomException(ErrorCode.STATE_CONFLICT, "이미 가입이 완료된 회원입니다.");
         }
 
         user.completeInsufficientInfo(request.getRole(), request.getPhoneNumber());
@@ -154,7 +169,7 @@ public class AuthService {
 
     private void createCustomerProfile(User user, Long universityId) {
         if (universityId != null) {
-            University university = universityRepository.findById(universityId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 대학입니다."));
+            University university = universityRepository.findById(universityId).orElseThrow(() -> new CustomException(ErrorCode.RESOURCE_NOT_FOUND,"해당 대학을 찾을 수 없습니다."));
             CustomerProfile profile = CustomerProfile.create(user, university);
             customerProfileRepository.save(profile);
         } else {
