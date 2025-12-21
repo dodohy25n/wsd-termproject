@@ -1,6 +1,6 @@
 package hello.wsd.common.exception;
 
-import hello.wsd.common.response.ApiResponse;
+import hello.wsd.common.response.CommonResponse;
 import hello.wsd.common.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -15,107 +15,102 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
-    // 일반 예러
-    @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ApiResponse<ErrorResponse>> handleCustomException(CustomException e, HttpServletRequest request) {
-        ErrorCode errorCode = e.getErrorCode();
+        // 일반 예러
+        @ExceptionHandler(CustomException.class)
+        public ResponseEntity<CommonResponse<ErrorResponse>> handleCustomException(CustomException e,
+                        HttpServletRequest request) {
+                ErrorCode errorCode = e.getErrorCode();
 
-        log.warn("[CustomException] url: {} | errorType: {} | message: {}", request.getRequestURI(), errorCode.name(), e.getMessage());
+                log.warn("[CustomException] url: {} | errorType: {} | message: {}", request.getRequestURI(),
+                                errorCode.name(), e.getMessage());
 
-        ErrorResponse errorResponse = ErrorResponse.of(
-                errorCode,
-                e.getMessage(),
-                request.getRequestURI()
-        );
+                ErrorResponse errorResponse = ErrorResponse.of(
+                                errorCode,
+                                e.getMessage(),
+                                request.getRequestURI());
 
-        return ResponseEntity
-                .status(errorCode.getHttpStatus())
-                .body(ApiResponse.fail(errorResponse));
-    }
+                return ResponseEntity
+                                .status(errorCode.getHttpStatus())
+                                .body(CommonResponse.fail(errorResponse));
+        }
 
-    // 검증 에러
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<ErrorResponse>> handleValidationException(
-            MethodArgumentNotValidException e,
-            HttpServletRequest request
-    ) {
+        // 검증 에러
+        @ExceptionHandler(MethodArgumentNotValidException.class)
+        public ResponseEntity<CommonResponse<ErrorResponse>> handleValidationException(
+                        MethodArgumentNotValidException e,
+                        HttpServletRequest request) {
 
-        ErrorCode errorCode = ErrorCode.VALIDATION_FAILED;
+                ErrorCode errorCode = ErrorCode.VALIDATION_FAILED;
 
-        log.info("[ValidationException] url: {} | message: {}", request.getRequestURI(), e.getMessage());
+                log.info("[ValidationException] url: {} | message: {}", request.getRequestURI(), e.getMessage());
 
-        ErrorResponse errorResponse = ErrorResponse.of(
-                errorCode,
-                e.getBindingResult(), // 실패한 필드 정보들
-                request.getRequestURI()
-        );
+                ErrorResponse errorResponse = ErrorResponse.of(
+                                errorCode,
+                                e.getBindingResult(), // 실패한 필드 정보들
+                                request.getRequestURI());
 
-        return ResponseEntity
-                .status(errorCode.getHttpStatus())
-                .body(ApiResponse.fail(errorResponse));
-    }
-    
-    // 인증 실패 에러
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ApiResponse<ErrorResponse>> handleAuthenticationException(
-            AccessDeniedException e,
-            HttpServletRequest request
-    ) {
+                return ResponseEntity
+                                .status(errorCode.getHttpStatus())
+                                .body(CommonResponse.fail(errorResponse));
+        }
 
-        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+        // 인증 실패 에러
+        @ExceptionHandler(AuthenticationException.class)
+        public ResponseEntity<CommonResponse<ErrorResponse>> handleAuthenticationException(
+                        AccessDeniedException e,
+                        HttpServletRequest request) {
 
-        log.info("[AuthenticationException] url: {} | message: {}", request.getRequestURI(), e.getMessage());
+                ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
 
-        ErrorResponse errorResponse = ErrorResponse.of(
-                errorCode,
-                e.getMessage(),
-                request.getRequestURI()
-        );
+                log.info("[AuthenticationException] url: {} | message: {}", request.getRequestURI(), e.getMessage());
 
-        return ResponseEntity
-                .status(errorCode.getHttpStatus())
-                .body(ApiResponse.fail(errorResponse));
-    }
-    
-    // 권한 없음 에러
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ApiResponse<ErrorResponse>> handleAccessDeniedException(
-            AccessDeniedException e,
-            HttpServletRequest request) {
+                ErrorResponse errorResponse = ErrorResponse.of(
+                                errorCode,
+                                e.getMessage(),
+                                request.getRequestURI());
 
-        ErrorCode errorCode = ErrorCode.FORBIDDEN;
+                return ResponseEntity
+                                .status(errorCode.getHttpStatus())
+                                .body(CommonResponse.fail(errorResponse));
+        }
 
-        log.info("[AccessDeniedException] url: {} | message: {}", request.getRequestURI(), e.getMessage());
+        // 권한 없음 에러
+        @ExceptionHandler(AccessDeniedException.class)
+        public ResponseEntity<CommonResponse<ErrorResponse>> handleAccessDeniedException(
+                        AccessDeniedException e,
+                        HttpServletRequest request) {
 
-        ErrorResponse errorResponse = ErrorResponse.of(
-                errorCode,
-                e.getMessage(),
-                request.getRequestURI()
-        );
+                ErrorCode errorCode = ErrorCode.FORBIDDEN;
 
-        return ResponseEntity
-                .status(errorCode.getHttpStatus())
-                .body(ApiResponse.fail(errorResponse));
-    }
-    
-    // 나머지 모든 예외 처리
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<ErrorResponse>> handleAllException(
-            Exception e,
-            HttpServletRequest request) {
+                log.info("[AccessDeniedException] url: {} | message: {}", request.getRequestURI(), e.getMessage());
 
-        ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+                ErrorResponse errorResponse = ErrorResponse.of(
+                                errorCode,
+                                e.getMessage(),
+                                request.getRequestURI());
 
-        log.warn("[InternalServerError] url: {} | message: {}", request.getRequestURI(), e.getMessage(), e);
+                return ResponseEntity
+                                .status(errorCode.getHttpStatus())
+                                .body(CommonResponse.fail(errorResponse));
+        }
 
-        ErrorResponse errorResponse = ErrorResponse.of(
-                errorCode,
-                e.getMessage(),
-                request.getRequestURI()
-        );
+        // 나머지 모든 예외 처리
+        @ExceptionHandler(Exception.class)
+        public ResponseEntity<CommonResponse<ErrorResponse>> handleAllException(
+                        Exception e,
+                        HttpServletRequest request) {
 
-        return ResponseEntity
-                .status(errorCode.getHttpStatus())
-                .body(ApiResponse.fail(errorResponse));
-    }
+                ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+
+                log.warn("[InternalServerError] url: {} | message: {}", request.getRequestURI(), e.getMessage(), e);
+
+                ErrorResponse errorResponse = ErrorResponse.of(
+                                errorCode,
+                                e.getMessage(),
+                                request.getRequestURI());
+
+                return ResponseEntity
+                                .status(errorCode.getHttpStatus())
+                                .body(CommonResponse.fail(errorResponse));
+        }
 }

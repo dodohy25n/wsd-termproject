@@ -91,20 +91,6 @@ public class CouponService {
 
         validateStoreOwner(coupon.getStore(), user);
 
-        // Update fields if provided. Note: Coupon entity might need update method.
-        // Assuming update method exists or I will verify Coupon.java
-        // Coupon.java has updateStatus only. I might need to add update method or
-        // specific setters.
-        // For now, I will use setters or updateStatus. Wait, I should add update method
-        // to Coupon Entity.
-        // I will assume update method needs to be added or use what is available.
-        // I'll add a comprehensive update method to Coupon entity in next step.
-        // For now I'll use a placeholder comment.
-        // Actually I should edit the entity first, but I am in the middle of writing
-        // service.
-        // I will finish this file assuming `update` method exists, and then go update
-        // `Coupon.java`.
-
         coupon.updateCoupon(
                 request.getTitle(),
                 request.getDescription(),
@@ -162,23 +148,10 @@ public class CouponService {
             throw new CustomException(ErrorCode.BAD_REQUEST, "발급 기간이 지났습니다.");
         }
 
-        // Quantity Check - Simplified (Concurrency issues possible, need Lock for real
-        // prod, but skipping for now)
-        // Check per user limit
         Integer userCount = customerCouponRepository.countByCouponAndUser(coupon, user);
         if (userCount >= coupon.getLimitPerUser()) {
             throw new CustomException(ErrorCode.BAD_REQUEST, "인당 발급 한도를 초과했습니다.");
         }
-
-        // Logic for total quantity check vs current issued count needed?
-        // Coupon doesn't track current issued count directly.
-        // I should count CustomerCoupons for this coupon.
-        // long totalIssued = customerCouponRepository.countByCoupon(coupon); // Need to
-        // add to repo?
-        // or add issuedCount to Coupon entity (better for perf).
-        // For now I'll skip strict total quantity check or assume it's large
-        // enough/handled elsewhere
-        // OR add `countByCoupon` to repo. Best to add to repo.
 
         String code = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
@@ -187,11 +160,7 @@ public class CouponService {
                 .coupon(coupon)
                 .couponCode(code)
                 .status(CouponUsageStatus.UNUSED)
-                .expiresAt(now.plusDays(30)) // Default expiration? Or from coupon? Coupon doesn't have expiry
-                                             // duration/date field in entity shown earlier.
-                // Looking at Coupon.java: issueEndsAt is for issuing. No "validUntil" or
-                // "validDays".
-                // I'll assume 30 days default or same as issueEndsAt if logical.
+                .expiresAt(now.plusDays(30))
                 .build();
 
         customerCouponRepository.save(customerCoupon);
