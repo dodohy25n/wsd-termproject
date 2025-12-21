@@ -1,7 +1,9 @@
 package hello.wsd.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
 
+@Getter
 public class ApiResponse <T>{
 
     private static final Boolean SUCCESS = true;

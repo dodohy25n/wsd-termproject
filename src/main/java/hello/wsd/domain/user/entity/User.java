@@ -9,7 +9,6 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,24 +41,23 @@ public class User extends BaseEntity {
 
     // 소셜 로그인 정보
     @Enumerated(EnumType.STRING)
-    @Builder.Default
-    private SocialType socialType = SocialType.LOCAL;
+    private SocialType socialType;
 
     // 소셜 식별 값 (예: 카카오의 회원번호)
     private String socialId;
 
-    public static User create(String username, String password, String email, String name, String phoneNumber, Role role, SocialType socialType, String socialId) {
-        return User.builder()
-                .username(username)
-                .password(password)
-                .email(email)
-                .name(name)
-                .phoneNumber(phoneNumber)
-                .role(role)
-                .socialType(socialType)
-                .socialId(socialId)
-                .build();
+    @Builder
+    public User(String username, String email, String password, String name, String phoneNumber, Role role, SocialType socialType, String socialId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.socialType = socialType;
+        this.socialId = socialId;
     }
+
 
     // 소셜 가입 후 부족한 정보 완성 -> ROLE_GUEST에서 승격
     public void completeInsufficientInfo(Role role, String phoneNumber) {

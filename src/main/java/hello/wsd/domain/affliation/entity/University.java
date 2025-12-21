@@ -10,7 +10,6 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class University {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +21,10 @@ public class University {
 
     @Column(unique = true)
     private String emailDomain;
+
+    @Builder
+    public University(String name, String emailDomain) {
+        this.name = name;
+        this.emailDomain = emailDomain;
+    }
 }

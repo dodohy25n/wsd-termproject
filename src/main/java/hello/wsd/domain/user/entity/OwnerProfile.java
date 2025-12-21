@@ -7,7 +7,6 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 public class OwnerProfile {
 
     @Id
@@ -25,14 +24,12 @@ public class OwnerProfile {
     // 승인 상태
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @Builder.Default // 빌더 패턴 생성에서도 기본값 적용
-    private VerificationStatus verificationStatus =VerificationStatus.PENDING;
+    private VerificationStatus verificationStatus = VerificationStatus.PENDING;
 
-    public static OwnerProfile create(User user, String businessNumber) {
-        return OwnerProfile.builder()
-                .user(user)
-                .businessNumber(businessNumber)
-                .verificationStatus(VerificationStatus.PENDING)
-                .build();
+    @Builder
+    public OwnerProfile(User user, String businessNumber, VerificationStatus verificationStatus) {
+        this.user = user;
+        this.businessNumber = businessNumber;
+        this.verificationStatus = verificationStatus != null ? verificationStatus : VerificationStatus.PENDING;
     }
 }

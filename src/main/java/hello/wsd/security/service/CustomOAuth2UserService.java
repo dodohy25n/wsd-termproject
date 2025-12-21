@@ -75,7 +75,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         // 신규 회원가입
-        User newSocialUser = User.create(username, null, email, userInfo.getName(), null, Role.ROLE_GUEST, SocialType.valueOf(userInfo.getProvider().toUpperCase()), userInfo.getProviderId());
+        User newSocialUser = User.builder()
+                .username(username)
+                .email(email)
+                .name(userInfo.getName())
+                .role(Role.ROLE_GUEST)
+                .socialType(SocialType.valueOf(userInfo.getProvider().toUpperCase()))
+                .socialId(userInfo.getProviderId())
+                .build();
+
         return userRepository.save(newSocialUser);
     }
 }

@@ -14,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.util.Collections;
@@ -89,7 +88,6 @@ public class JwtTokenProvider {
 
         // 토큰 정보로 가짜 사용자 객체 생성
         User user = User.builder()
-                .id(Long.parseLong(userId))
                 .username(username)
                 .role(Role.valueOf(role))
                 .password("")

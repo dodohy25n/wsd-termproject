@@ -91,7 +91,7 @@ public class GlobalExceptionHandler {
     // 나머지 모든 예외 처리
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<ErrorResponse>> handleAllException(
-            AccessDeniedException e,
+            Exception e,
             HttpServletRequest request) {
 
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;

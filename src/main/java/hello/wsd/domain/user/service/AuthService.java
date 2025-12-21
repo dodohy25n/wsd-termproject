@@ -48,8 +48,15 @@ public class AuthService {
             throw new CustomException(ErrorCode.DUPLICATE_RESOURCE, "이미 가입된 이메일 입니다.");
         }
 
-        User user = User.create(request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getEmail(),
-                request.getName(), request.getPhoneNumber(), request.getRole(), SocialType.LOCAL, null);
+        User user = User.builder()
+                .username(request.getEmail())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .name(request.getName())
+                .phoneNumber(request.getPhoneNumber())
+                .role(Role.ROLE_GUEST)
+                .socialType(SocialType.LOCAL)
+                .build();
 
         Long id = userRepository.save(user).getId();
 
@@ -96,16 +103,15 @@ public class AuthService {
 
         User user = userRepository.findByUsername(username)
                 .orElseGet(() -> {
-                    // 신규 회원 가입
-                    User newUser = User.create(
-                            username,
-                            null,
-                            email,
-                            name != null ? name : "Firebase User",
-                            null,
-                            Role.ROLE_GUEST,
-                            SocialType.FIREBASE,
-                            uid);
+                    // 없으면 신규 회원 가입
+                    User newUser = User.builder()
+                            .username(username)
+                            .email(email)
+                            .name(name)
+                            .role(Role.ROLE_GUEST)
+                            .socialType(SocialType.FIREBASE)
+                            .socialId(uid)
+                            .build();
                     return userRepository.save(newUser);
                 });
 
@@ -170,18 +176,18 @@ public class AuthService {
     private void createCustomerProfile(User user, Long universityId) {
         if (universityId != null) {
             University university = universityRepository.findById(universityId).orElseThrow(() -> new CustomException(ErrorCode.RESOURCE_NOT_FOUND,"해당 대학을 찾을 수 없습니다."));
-            CustomerProfile profile = CustomerProfile.create(user, university);
+            CustomerProfile profile = CustomerProfile.builder().user(user).university(university).build();
             customerProfileRepository.save(profile);
         } else {
             // 대학생 아닌 고객 가입
-            CustomerProfile profile = CustomerProfile.create(user);
+            CustomerProfile profile = CustomerProfile.builder().user(user).build();
             customerProfileRepository.save(profile);
         }
 
     }
 
     private void createOwnerProfile(User user, String businessNumber) {
-        OwnerProfile profile = OwnerProfile.create(user, businessNumber);
+        OwnerProfile profile = OwnerProfile.builder().user(user).businessNumber(businessNumber).build();
         ownerProfileRepository.save(profile);
     }
 
