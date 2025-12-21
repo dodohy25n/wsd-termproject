@@ -1,6 +1,6 @@
 package hello.wsd.domain.coupon.entity;
 
-import hello.wsd.domain.store.entity.Item;
+import hello.wsd.domain.item.entity.Item;
 import jakarta.persistence.*;
 import lombok.*;
 

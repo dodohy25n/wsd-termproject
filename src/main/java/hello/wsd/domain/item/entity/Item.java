@@ -1,5 +1,6 @@
-package hello.wsd.domain.store.entity;
+package hello.wsd.domain.item.entity;
 
+import hello.wsd.domain.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,11 +42,21 @@ public class Item {
         this.isSoldOut = isSoldOut;
     }
 
-    public void updateItem(String name, int price, String description, String imageUrl, boolean isSoldOut) {
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.imageUrl = imageUrl;
-        this.isSoldOut = isSoldOut;
+    public void updateItem(String name, Integer price, String description, String imageUrl, Boolean isSoldOut) {
+        if (name != null) {
+            this.name = name;
+        }
+        if (price != null) {
+            this.price = price;
+        }
+        if (description != null) {
+            this.description = description;
+        }
+        if (imageUrl != null) {
+            this.imageUrl = imageUrl;
+        }
+        if (isSoldOut != null) {
+            this.isSoldOut = isSoldOut;
+        }
     }
 }
