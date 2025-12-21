@@ -66,6 +66,24 @@ public class Coupon extends BaseEntity {
         this.status = status;
     }
 
+    public void updateCoupon(String title, String description, LocalDateTime issueStartsAt, LocalDateTime issueEndsAt,
+            Integer totalQuantity, Integer limitPerUser, CouponStatus status) {
+        if (title != null)
+            this.title = title;
+        if (description != null)
+            this.description = description;
+        if (issueStartsAt != null)
+            this.issueStartsAt = issueStartsAt;
+        if (issueEndsAt != null)
+            this.issueEndsAt = issueEndsAt;
+        if (totalQuantity != null)
+            this.totalQuantity = totalQuantity;
+        if (limitPerUser != null)
+            this.limitPerUser = limitPerUser;
+        if (status != null)
+            this.status = status;
+    }
+
     public void updateStatus(CouponStatus status) {
         this.status = status;
     }
