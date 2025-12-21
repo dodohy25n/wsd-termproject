@@ -25,8 +25,10 @@ import java.util.Set;
 public class JwtTokenProvider {
 
     private final SecretKey secretKey;
-    @Getter private final long accessTokenExpiresIn;
-    @Getter private final long refreshTokenExpiresIn;
+    @Getter
+    private final long accessTokenExpiresIn;
+    @Getter
+    private final long refreshTokenExpiresIn;
 
     private static final String KEY_ROLE = "role";
     private static final String KEY_TYPE = "type";
@@ -34,8 +36,7 @@ public class JwtTokenProvider {
     public JwtTokenProvider(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.access-expiration}") long accessTokenExpiresIn,
-            @Value("${jwt.refresh-expiration}") long refreshTokenExpiresIn
-    ) {
+            @Value("${jwt.refresh-expiration}") long refreshTokenExpiresIn) {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
         this.accessTokenExpiresIn = accessTokenExpiresIn;
@@ -93,9 +94,11 @@ public class JwtTokenProvider {
                 .password("")
                 .build();
 
+        user.setUserId(Long.valueOf(userId));
+
         // 일반/소셜 공통 사용자 인증 객체 생성
         PrincipalDetails principal = new PrincipalDetails(user);
-        
+
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
@@ -138,7 +141,8 @@ public class JwtTokenProvider {
     // 토큰에서 UserId 추출
     public Long getUserId(String token) {
         Claims claims = parseClaims(token);
-        if (claims == null) throw new RuntimeException("토큰 파싱 실패");
+        if (claims == null)
+            throw new RuntimeException("토큰 파싱 실패");
         return Long.valueOf(claims.getSubject());
     }
 }

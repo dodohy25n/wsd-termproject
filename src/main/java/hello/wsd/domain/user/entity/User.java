@@ -47,7 +47,8 @@ public class User extends BaseEntity {
     private String socialId;
 
     @Builder
-    public User(String username, String email, String password, String name, String phoneNumber, Role role, SocialType socialType, String socialId) {
+    public User(String username, String email, String password, String name, String phoneNumber, Role role,
+            SocialType socialType, String socialId) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -57,7 +58,6 @@ public class User extends BaseEntity {
         this.socialType = socialType;
         this.socialId = socialId;
     }
-
 
     // 소셜 가입 후 부족한 정보 완성 -> ROLE_GUEST에서 승격
     public void completeInsufficientInfo(Role role, String phoneNumber) {
@@ -73,5 +73,9 @@ public class User extends BaseEntity {
             this.email = userInfo.getEmail();
         }
         return this;
+    }
+
+    public void setUserId(Long userId) {
+        this.id = userId;
     }
 }

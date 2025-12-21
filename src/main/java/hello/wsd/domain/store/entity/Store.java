@@ -57,13 +57,29 @@ public class Store extends BaseEntity {
 
     public void updateStore(String name, String address, Double latitude, Double longitude, String phoneNumber,
             String introduction, String operatingHours, StoreCategory storeCategory) {
-        this.name = name;
-        this.address = address;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.phoneNumber = phoneNumber;
-        this.introduction = introduction;
-        this.operatingHours = operatingHours;
-        this.storeCategory = storeCategory;
+        if (name != null) {
+            this.name = name;
+        }
+        if (address != null) {
+            this.address = address;
+        }
+        if (latitude != null) {
+            this.latitude = latitude;
+        }
+        if (longitude != null) {
+            this.longitude = longitude;
+        }
+        if (phoneNumber != null) {
+            this.phoneNumber = phoneNumber;
+        }
+        if (introduction != null) {
+            this.introduction = introduction;
+        }
+        if (operatingHours != null) {
+            this.operatingHours = operatingHours;
+        }
+        if (storeCategory != null) {
+            this.storeCategory = storeCategory;
+        }
     }
 }

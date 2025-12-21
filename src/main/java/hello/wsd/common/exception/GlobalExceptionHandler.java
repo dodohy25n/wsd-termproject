@@ -3,6 +3,7 @@ package hello.wsd.common.exception;
 import hello.wsd.common.response.ApiResponse;
 import hello.wsd.common.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -11,12 +12,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     // 일반 예러
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ApiResponse<ErrorResponse>> handleCustomException(CustomException e, HttpServletRequest request) {
         ErrorCode errorCode = e.getErrorCode();
+
+        log.warn("[CustomException] url: {} | errorType: {} | message: {}", request.getRequestURI(), errorCode.name(), e.getMessage());
 
         ErrorResponse errorResponse = ErrorResponse.of(
                 errorCode,
@@ -38,6 +42,8 @@ public class GlobalExceptionHandler {
 
         ErrorCode errorCode = ErrorCode.VALIDATION_FAILED;
 
+        log.info("[ValidationException] url: {} | message: {}", request.getRequestURI(), e.getMessage());
+
         ErrorResponse errorResponse = ErrorResponse.of(
                 errorCode,
                 e.getBindingResult(), // 실패한 필드 정보들
@@ -58,6 +64,8 @@ public class GlobalExceptionHandler {
 
         ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
 
+        log.info("[AuthenticationException] url: {} | message: {}", request.getRequestURI(), e.getMessage());
+
         ErrorResponse errorResponse = ErrorResponse.of(
                 errorCode,
                 e.getMessage(),
@@ -77,6 +85,8 @@ public class GlobalExceptionHandler {
 
         ErrorCode errorCode = ErrorCode.FORBIDDEN;
 
+        log.info("[AccessDeniedException] url: {} | message: {}", request.getRequestURI(), e.getMessage());
+
         ErrorResponse errorResponse = ErrorResponse.of(
                 errorCode,
                 e.getMessage(),
@@ -95,6 +105,8 @@ public class GlobalExceptionHandler {
             HttpServletRequest request) {
 
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+
+        log.warn("[InternalServerError] url: {} | message: {}", request.getRequestURI(), e.getMessage(), e);
 
         ErrorResponse errorResponse = ErrorResponse.of(
                 errorCode,
