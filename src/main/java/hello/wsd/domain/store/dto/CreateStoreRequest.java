@@ -5,11 +5,15 @@ import hello.wsd.domain.store.entity.StoreCategory;
 import hello.wsd.domain.user.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CreateStoreRequest {
 
     @NotBlank(message = "가게 이름은 필수입니다.")

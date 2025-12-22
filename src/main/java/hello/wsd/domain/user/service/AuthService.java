@@ -54,7 +54,7 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .name(request.getName())
                 .phoneNumber(request.getPhoneNumber())
-                .role(Role.ROLE_GUEST)
+                .role(request.getRole())
                 .socialType(SocialType.LOCAL)
                 .build();
 
@@ -175,7 +175,8 @@ public class AuthService {
 
     private void createCustomerProfile(User user, Long universityId) {
         if (universityId != null) {
-            University university = universityRepository.findById(universityId).orElseThrow(() -> new CustomException(ErrorCode.RESOURCE_NOT_FOUND,"해당 대학을 찾을 수 없습니다."));
+            University university = universityRepository.findById(universityId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.RESOURCE_NOT_FOUND, "해당 대학을 찾을 수 없습니다."));
             CustomerProfile profile = CustomerProfile.builder().user(user).university(university).build();
             customerProfileRepository.save(profile);
         } else {

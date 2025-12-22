@@ -4,6 +4,8 @@ import hello.wsd.domain.coupon.entity.CouponStatus;
 import hello.wsd.domain.coupon.entity.CouponType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CreateCouponRequest {
 
     @NotBlank(message = "쿠폰명은 필수입니다.")

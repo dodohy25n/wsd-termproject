@@ -1,0 +1,2105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="hello.wsd.domain.coupon.controller.CouponControllerTest" tests="3" skipped="0" failures="2" errors="0" timestamp="2025-12-22T07:15:06.755Z" hostname="도현갤럭시북" time="1.947">
+  <properties/>
+  <testcase name="쿠폰 발급 성공" classname="hello.wsd.domain.coupon.controller.CouponControllerTest" time="1.249">
+    <failure message="java.lang.AssertionError: No value at JSON path &quot;$.data.couponId&quot;" type="java.lang.AssertionError">java.lang.AssertionError: No value at JSON path &quot;$.data.couponId&quot;
+	at org.springframework.test.util.JsonPathExpectationsHelper.evaluateJsonPath(JsonPathExpectationsHelper.java:351)
+	at org.springframework.test.util.JsonPathExpectationsHelper.assertValue(JsonPathExpectationsHelper.java:148)
+	at org.springframework.test.web.servlet.result.JsonPathResultMatchers.lambda$value$2(JsonPathResultMatchers.java:112)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
+	at hello.wsd.domain.coupon.controller.CouponControllerTest.issueCoupon_Success(CouponControllerTest.java:120)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+Caused by: com.jayway.jsonpath.PathNotFoundException: No results for path: $['data']['couponId']
+</failure>
+  </testcase>
+  <testcase name="쿠폰 사용 성공" classname="hello.wsd.domain.coupon.controller.CouponControllerTest" time="0.414">
+    <failure message="java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;" type="java.lang.AssertionError">java.lang.AssertionError: Status expected:&lt;200&gt; but was:&lt;404&gt;
+	at org.springframework.test.util.AssertionErrors.fail(AssertionErrors.java:61)
+	at org.springframework.test.util.AssertionErrors.assertEquals(AssertionErrors.java:128)
+	at org.springframework.test.web.servlet.result.StatusResultMatchers.lambda$matcher$9(StatusResultMatchers.java:640)
+	at org.springframework.test.web.servlet.MockMvc$1.andExpect(MockMvc.java:214)
+	at hello.wsd.domain.coupon.controller.CouponControllerTest.useCoupon_Success(CouponControllerTest.java:166)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+</failure>
+  </testcase>
+  <testcase name="쿠폰 생성 성공" classname="hello.wsd.domain.coupon.controller.CouponControllerTest" time="0.28"/>
+  <system-out><![CDATA[Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+16:14:55.926 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [hello.wsd.domain.coupon.controller.CouponControllerTest]: CouponControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+16:14:56.184 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration hello.wsd.WsdApplication for test class hello.wsd.domain.coupon.controller.CouponControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.0)
+
+2025-12-22T16:14:56.804+09:00  INFO 15192 --- [    Test worker] h.w.d.c.controller.CouponControllerTest  : Starting CouponControllerTest using Java 17.0.14 with PID 15192 (started by dohyeon in C:\Users\dohyeon\Desktop\wsd)
+2025-12-22T16:14:56.807+09:00  INFO 15192 --- [    Test worker] h.w.d.c.controller.CouponControllerTest  : The following 1 profile is active: "test"
+2025-12-22T16:14:58.323+09:00  INFO 15192 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-12-22T16:14:58.326+09:00  INFO 15192 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-12-22T16:14:58.586+09:00  INFO 15192 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 243 ms. Found 12 JPA repository interfaces.
+2025-12-22T16:14:58.602+09:00  INFO 15192 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2025-12-22T16:14:58.603+09:00  INFO 15192 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-12-22T16:14:58.626+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.affliation.repository.AffiliationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.627+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.affliation.repository.UniversityRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.629+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.coupon.repository.CouponItemRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.630+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.coupon.repository.CouponRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.630+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.coupon.repository.CustomerCouponRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.630+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.favorite.repository.FavoriteRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.630+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.item.repository.ItemRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.631+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.review.repository.ReviewRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.631+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.store.repository.StoreRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.631+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.user.repository.CustomerProfileRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.632+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.user.repository.OwnerProfileRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.632+09:00  INFO 15192 --- [    Test worker] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface hello.wsd.domain.user.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2025-12-22T16:14:58.632+09:00  INFO 15192 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 19 ms. Found 0 Redis repository interfaces.
+2025-12-22T16:15:00.922+09:00  INFO 15192 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-12-22T16:15:01.189+09:00  INFO 15192 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
+2025-12-22T16:15:01.292+09:00  INFO 15192 --- [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-12-22T16:15:01.576+09:00  INFO 15192 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-12-22T16:15:01.650+09:00  INFO 15192 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-12-22T16:15:01.991+09:00  INFO 15192 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:testdb user=SA
+2025-12-22T16:15:01.993+09:00  INFO 15192 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-12-22T16:15:02.043+09:00  WARN 15192 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-12-22T16:15:02.092+09:00  INFO 15192 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-12-22T16:15:03.743+09:00  INFO 15192 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-12-22T16:15:03.758+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists affiliation cascade 
+Hibernate: 
+    drop table if exists affiliation cascade 
+2025-12-22T16:15:03.762+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists coupon cascade 
+Hibernate: 
+    drop table if exists coupon cascade 
+2025-12-22T16:15:03.762+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists coupon_item cascade 
+Hibernate: 
+    drop table if exists coupon_item cascade 
+2025-12-22T16:15:03.763+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists customer_coupon cascade 
+Hibernate: 
+    drop table if exists customer_coupon cascade 
+2025-12-22T16:15:03.763+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists customer_profile cascade 
+Hibernate: 
+    drop table if exists customer_profile cascade 
+2025-12-22T16:15:03.763+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists favorite_store cascade 
+Hibernate: 
+    drop table if exists favorite_store cascade 
+2025-12-22T16:15:03.763+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists item cascade 
+Hibernate: 
+    drop table if exists item cascade 
+2025-12-22T16:15:03.763+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists owner_profile cascade 
+Hibernate: 
+    drop table if exists owner_profile cascade 
+2025-12-22T16:15:03.764+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists review cascade 
+Hibernate: 
+    drop table if exists review cascade 
+2025-12-22T16:15:03.764+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists store cascade 
+Hibernate: 
+    drop table if exists store cascade 
+2025-12-22T16:15:03.764+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists store_affiliation cascade 
+Hibernate: 
+    drop table if exists store_affiliation cascade 
+2025-12-22T16:15:03.764+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists store_image cascade 
+Hibernate: 
+    drop table if exists store_image cascade 
+2025-12-22T16:15:03.764+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists university cascade 
+Hibernate: 
+    drop table if exists university cascade 
+2025-12-22T16:15:03.766+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists user cascade 
+Hibernate: 
+    drop table if exists user cascade 
+2025-12-22T16:15:03.766+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists user_affiliation cascade 
+Hibernate: 
+    drop table if exists user_affiliation cascade 
+2025-12-22T16:15:03.771+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table affiliation (
+        affiliation_id bigint generated by default as identity,
+        created_at timestamp(6) not null,
+        expires_at timestamp(6),
+        modified_at timestamp(6) not null,
+        university_id bigint not null,
+        category varchar(255) not null,
+        created_by varchar(255),
+        last_modified_by varchar(255),
+        name varchar(255) not null,
+        primary key (affiliation_id)
+    )
+Hibernate: 
+    create table affiliation (
+        affiliation_id bigint generated by default as identity,
+        created_at timestamp(6) not null,
+        expires_at timestamp(6),
+        modified_at timestamp(6) not null,
+        university_id bigint not null,
+        category varchar(255) not null,
+        created_by varchar(255),
+        last_modified_by varchar(255),
+        name varchar(255) not null,
+        primary key (affiliation_id)
+    )
+2025-12-22T16:15:03.781+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table coupon (
+        limit_per_user integer not null,
+        total_quantity integer not null,
+        coupon_id bigint generated by default as identity,
+        created_at timestamp(6) not null,
+        issue_ends_at timestamp(6),
+        issue_starts_at timestamp(6),
+        modified_at timestamp(6) not null,
+        store_id bigint not null,
+        target_affiliation_id bigint,
+        created_by varchar(255),
+        last_modified_by varchar(255),
+        title varchar(255) not null,
+        description clob,
+        status enum ('ACTIVE','DRAFT','EXPIRED','SCHEDULED','STOPPED') not null,
+        type enum ('AFFILIATION','GENERAL','STAMP') not null,
+        primary key (coupon_id)
+    )
+Hibernate: 
+    create table coupon (
+        limit_per_user integer not null,
+        total_quantity integer not null,
+        coupon_id bigint generated by default as identity,
+        created_at timestamp(6) not null,
+        issue_ends_at timestamp(6),
+        issue_starts_at timestamp(6),
+        modified_at timestamp(6) not null,
+        store_id bigint not null,
+        target_affiliation_id bigint,
+        created_by varchar(255),
+        last_modified_by varchar(255),
+        title varchar(255) not null,
+        description clob,
+        status enum ('ACTIVE','DRAFT','EXPIRED','SCHEDULED','STOPPED') not null,
+        type enum ('AFFILIATION','GENERAL','STAMP') not null,
+        primary key (coupon_id)
+    )
+2025-12-22T16:15:03.783+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table coupon_item (
+        coupon_id bigint not null,
+        id bigint generated by default as identity,
+        item_id bigint not null,
+        primary key (id),
+        unique (coupon_id, item_id)
+    )
+Hibernate: 
+    create table coupon_item (
+        coupon_id bigint not null,
+        id bigint generated by default as identity,
+        item_id bigint not null,
+        primary key (id),
+        unique (coupon_id, item_id)
+    )
+2025-12-22T16:15:03.786+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table customer_coupon (
+        coupon_id bigint not null,
+        customer_coupon_id bigint generated by default as identity,
+        expires_at timestamp(6) not null,
+        issued_at timestamp(6),
+        used_at timestamp(6),
+        user_id bigint not null,
+        coupon_code varchar(255) not null unique,
+        status enum ('EXPIRED','UNUSED','USED') not null,
+        primary key (customer_coupon_id)
+    )
+Hibernate: 
+    create table customer_coupon (
+        coupon_id bigint not null,
+        customer_coupon_id bigint generated by default as identity,
+        expires_at timestamp(6) not null,
+        issued_at timestamp(6),
+        used_at timestamp(6),
+        user_id bigint not null,
+        coupon_code varchar(255) not null unique,
+        status enum ('EXPIRED','UNUSED','USED') not null,
+        primary key (customer_coupon_id)
+    )
+2025-12-22T16:15:03.787+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table customer_profile (
+        university_id bigint,
+        user_id bigint not null,
+        primary key (user_id)
+    )
+Hibernate: 
+    create table customer_profile (
+        university_id bigint,
+        user_id bigint not null,
+        primary key (user_id)
+    )
+2025-12-22T16:15:03.789+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table favorite_store (
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        modified_at timestamp(6) not null,
+        store_id bigint not null,
+        user_id bigint not null,
+        created_by varchar(255),
+        last_modified_by varchar(255),
+        primary key (id)
+    )
+Hibernate: 
+    create table favorite_store (
+        created_at timestamp(6) not null,
+        id bigint generated by default as identity,
+        modified_at timestamp(6) not null,
+        store_id bigint not null,
+        user_id bigint not null,
+        created_by varchar(255),
+        last_modified_by varchar(255),
+        primary key (id)
+    )
+2025-12-22T16:15:03.791+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table item (
+        is_sold_out boolean not null,
+        price integer not null,
+        item_id bigint generated by default as identity,
+        store_id bigint not null,
+        image_url varchar(255),
+        name varchar(255) not null,
+        description clob,
+        primary key (item_id)
+    )
+Hibernate: 
+    create table item (
+        is_sold_out boolean not null,
+        price integer not null,
+        item_id bigint generated by default as identity,
+        store_id bigint not null,
+        image_url varchar(255),
+        name varchar(255) not null,
+        description clob,
+        primary key (item_id)
+    )
+2025-12-22T16:15:03.792+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table owner_profile (
+        user_id bigint not null,
+        business_number varchar(255) not null unique,
+        verification_status enum ('ACCEPT','PENDING','REJECT') not null,
+        primary key (user_id)
+    )
+Hibernate: 
+    create table owner_profile (
+        user_id bigint not null,
+        business_number varchar(255) not null unique,
+        verification_status enum ('ACCEPT','PENDING','REJECT') not null,
+        primary key (user_id)
+    )
+2025-12-22T16:15:03.794+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table review (
+        is_private boolean not null,
+        rating integer not null,
+        created_at timestamp(6) not null,
+        customer_coupon_id bigint unique,
+        modified_at timestamp(6) not null,
+        parent_review_id bigint,
+        review_id bigint generated by default as identity,
+        store_id bigint not null,
+        user_id bigint not null,
+        created_by varchar(255),
+        last_modified_by varchar(255),
+        content clob,
+        primary key (review_id)
+    )
+Hibernate: 
+    create table review (
+        is_private boolean not null,
+        rating integer not null,
+        created_at timestamp(6) not null,
+        customer_coupon_id bigint unique,
+        modified_at timestamp(6) not null,
+        parent_review_id bigint,
+        review_id bigint generated by default as identity,
+        store_id bigint not null,
+        user_id bigint not null,
+        created_by varchar(255),
+        last_modified_by varchar(255),
+        content clob,
+        primary key (review_id)
+    )
+2025-12-22T16:15:03.796+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table store (
+        latitude float(53),
+        longitude float(53),
+        created_at timestamp(6) not null,
+        modified_at timestamp(6) not null,
+        store_id bigint generated by default as identity,
+        user_id bigint not null,
+        address varchar(255) not null,
+        created_by varchar(255),
+        last_modified_by varchar(255),
+        name varchar(255) not null,
+        phone_number varchar(255),
+        introduction clob,
+        operating_hours clob,
+        store_category enum ('BAR','CAFE','ETC','RESTAURANT') not null,
+        primary key (store_id)
+    )
+Hibernate: 
+    create table store (
+        latitude float(53),
+        longitude float(53),
+        created_at timestamp(6) not null,
+        modified_at timestamp(6) not null,
+        store_id bigint generated by default as identity,
+        user_id bigint not null,
+        address varchar(255) not null,
+        created_by varchar(255),
+        last_modified_by varchar(255),
+        name varchar(255) not null,
+        phone_number varchar(255),
+        introduction clob,
+        operating_hours clob,
+        store_category enum ('BAR','CAFE','ETC','RESTAURANT') not null,
+        primary key (store_id)
+    )
+2025-12-22T16:15:03.799+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table store_affiliation (
+        affiliation_id bigint not null,
+        id bigint generated by default as identity,
+        store_id bigint not null,
+        primary key (id),
+        unique (store_id, affiliation_id)
+    )
+Hibernate: 
+    create table store_affiliation (
+        affiliation_id bigint not null,
+        id bigint generated by default as identity,
+        store_id bigint not null,
+        primary key (id),
+        unique (store_id, affiliation_id)
+    )
+2025-12-22T16:15:03.800+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table store_image (
+        is_thumbnail boolean not null,
+        order_index integer not null,
+        store_id bigint not null,
+        store_image_id bigint generated by default as identity,
+        image_url varchar(255) not null,
+        primary key (store_image_id)
+    )
+Hibernate: 
+    create table store_image (
+        is_thumbnail boolean not null,
+        order_index integer not null,
+        store_id bigint not null,
+        store_image_id bigint generated by default as identity,
+        image_url varchar(255) not null,
+        primary key (store_image_id)
+    )
+2025-12-22T16:15:03.801+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table university (
+        university_id bigint generated by default as identity,
+        email_domain varchar(255) unique,
+        name varchar(255) not null unique,
+        primary key (university_id)
+    )
+Hibernate: 
+    create table university (
+        university_id bigint generated by default as identity,
+        email_domain varchar(255) unique,
+        name varchar(255) not null unique,
+        primary key (university_id)
+    )
+2025-12-22T16:15:03.802+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table user (
+        created_at timestamp(6) not null,
+        modified_at timestamp(6) not null,
+        user_id bigint generated by default as identity,
+        created_by varchar(255),
+        email varchar(255) unique,
+        last_modified_by varchar(255),
+        name varchar(255) not null,
+        password varchar(255),
+        phone_number varchar(255),
+        social_id varchar(255),
+        username varchar(255) not null unique,
+        role enum ('ROLE_ADMIN','ROLE_CUSTOMER','ROLE_GUEST','ROLE_OWNER') not null,
+        social_type enum ('FIREBASE','GOOGLE','KAKAO','LOCAL','NAVER'),
+        primary key (user_id)
+    )
+Hibernate: 
+    create table user (
+        created_at timestamp(6) not null,
+        modified_at timestamp(6) not null,
+        user_id bigint generated by default as identity,
+        created_by varchar(255),
+        email varchar(255) unique,
+        last_modified_by varchar(255),
+        name varchar(255) not null,
+        password varchar(255),
+        phone_number varchar(255),
+        social_id varchar(255),
+        username varchar(255) not null unique,
+        role enum ('ROLE_ADMIN','ROLE_CUSTOMER','ROLE_GUEST','ROLE_OWNER') not null,
+        social_type enum ('FIREBASE','GOOGLE','KAKAO','LOCAL','NAVER'),
+        primary key (user_id)
+    )
+2025-12-22T16:15:03.808+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    create table user_affiliation (
+        affiliation_id bigint not null,
+        id bigint generated by default as identity,
+        user_id bigint not null,
+        primary key (id)
+    )
+Hibernate: 
+    create table user_affiliation (
+        affiliation_id bigint not null,
+        id bigint generated by default as identity,
+        user_id bigint not null,
+        primary key (id)
+    )
+2025-12-22T16:15:03.809+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists affiliation 
+       add constraint FK886x6upej1d1cypi37k4nwsxh 
+       foreign key (university_id) 
+       references university
+Hibernate: 
+    alter table if exists affiliation 
+       add constraint FK886x6upej1d1cypi37k4nwsxh 
+       foreign key (university_id) 
+       references university
+2025-12-22T16:15:03.825+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists coupon 
+       add constraint FKs7yl3mm1m0o7fmn6et7guwo89 
+       foreign key (store_id) 
+       references store
+Hibernate: 
+    alter table if exists coupon 
+       add constraint FKs7yl3mm1m0o7fmn6et7guwo89 
+       foreign key (store_id) 
+       references store
+2025-12-22T16:15:03.826+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists coupon 
+       add constraint FKg5yplg3ja9fjwsb0kg4atqqcx 
+       foreign key (target_affiliation_id) 
+       references affiliation
+Hibernate: 
+    alter table if exists coupon 
+       add constraint FKg5yplg3ja9fjwsb0kg4atqqcx 
+       foreign key (target_affiliation_id) 
+       references affiliation
+2025-12-22T16:15:03.828+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists coupon_item 
+       add constraint FKn00k5dh46f87hue6dd10nrhjg 
+       foreign key (coupon_id) 
+       references coupon
+Hibernate: 
+    alter table if exists coupon_item 
+       add constraint FKn00k5dh46f87hue6dd10nrhjg 
+       foreign key (coupon_id) 
+       references coupon
+2025-12-22T16:15:03.829+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists coupon_item 
+       add constraint FKhlmwrm9mifpfvidcg62fi04f1 
+       foreign key (item_id) 
+       references item
+Hibernate: 
+    alter table if exists coupon_item 
+       add constraint FKhlmwrm9mifpfvidcg62fi04f1 
+       foreign key (item_id) 
+       references item
+2025-12-22T16:15:03.830+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists customer_coupon 
+       add constraint FKppndqdpydmsumc9yqslm5hss4 
+       foreign key (coupon_id) 
+       references coupon
+Hibernate: 
+    alter table if exists customer_coupon 
+       add constraint FKppndqdpydmsumc9yqslm5hss4 
+       foreign key (coupon_id) 
+       references coupon
+2025-12-22T16:15:03.831+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists customer_coupon 
+       add constraint FKhohiq0g3csfhhplrrctylcfeg 
+       foreign key (user_id) 
+       references user
+Hibernate: 
+    alter table if exists customer_coupon 
+       add constraint FKhohiq0g3csfhhplrrctylcfeg 
+       foreign key (user_id) 
+       references user
+2025-12-22T16:15:03.833+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists customer_profile 
+       add constraint FKao03odgyl491cttg20bd8fnn 
+       foreign key (university_id) 
+       references university
+Hibernate: 
+    alter table if exists customer_profile 
+       add constraint FKao03odgyl491cttg20bd8fnn 
+       foreign key (university_id) 
+       references university
+2025-12-22T16:15:03.834+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists customer_profile 
+       add constraint FK1mvmwv5gls412vk2nol8rhabf 
+       foreign key (user_id) 
+       references user
+Hibernate: 
+    alter table if exists customer_profile 
+       add constraint FK1mvmwv5gls412vk2nol8rhabf 
+       foreign key (user_id) 
+       references user
+2025-12-22T16:15:03.835+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists favorite_store 
+       add constraint FKr6bk7q3ru7y3dqcis9exkpxef 
+       foreign key (store_id) 
+       references store
+Hibernate: 
+    alter table if exists favorite_store 
+       add constraint FKr6bk7q3ru7y3dqcis9exkpxef 
+       foreign key (store_id) 
+       references store
+2025-12-22T16:15:03.836+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists favorite_store 
+       add constraint FKly8cfqsjue6ojuoi7tbmr8v9g 
+       foreign key (user_id) 
+       references user
+Hibernate: 
+    alter table if exists favorite_store 
+       add constraint FKly8cfqsjue6ojuoi7tbmr8v9g 
+       foreign key (user_id) 
+       references user
+2025-12-22T16:15:03.837+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists item 
+       add constraint FKi0c87m5jy5qxw8orrf2pugs6h 
+       foreign key (store_id) 
+       references store
+Hibernate: 
+    alter table if exists item 
+       add constraint FKi0c87m5jy5qxw8orrf2pugs6h 
+       foreign key (store_id) 
+       references store
+2025-12-22T16:15:03.839+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists owner_profile 
+       add constraint FKt3yj1mwxfa8hjs448a8psjibn 
+       foreign key (user_id) 
+       references user
+Hibernate: 
+    alter table if exists owner_profile 
+       add constraint FKt3yj1mwxfa8hjs448a8psjibn 
+       foreign key (user_id) 
+       references user
+2025-12-22T16:15:03.840+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists review 
+       add constraint FK1rksndkuedqpb7qmpfe5oyrem 
+       foreign key (customer_coupon_id) 
+       references customer_coupon
+Hibernate: 
+    alter table if exists review 
+       add constraint FK1rksndkuedqpb7qmpfe5oyrem 
+       foreign key (customer_coupon_id) 
+       references customer_coupon
+2025-12-22T16:15:03.840+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists review 
+       add constraint FKnplfourh24q37geshp603tcst 
+       foreign key (parent_review_id) 
+       references review
+Hibernate: 
+    alter table if exists review 
+       add constraint FKnplfourh24q37geshp603tcst 
+       foreign key (parent_review_id) 
+       references review
+2025-12-22T16:15:03.841+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists review 
+       add constraint FK74d12ba8sxxu9vpnc59b43y30 
+       foreign key (store_id) 
+       references store
+Hibernate: 
+    alter table if exists review 
+       add constraint FK74d12ba8sxxu9vpnc59b43y30 
+       foreign key (store_id) 
+       references store
+2025-12-22T16:15:03.843+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists review 
+       add constraint FKiyf57dy48lyiftdrf7y87rnxi 
+       foreign key (user_id) 
+       references user
+Hibernate: 
+    alter table if exists review 
+       add constraint FKiyf57dy48lyiftdrf7y87rnxi 
+       foreign key (user_id) 
+       references user
+2025-12-22T16:15:03.844+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists store 
+       add constraint FKn82wpcqrb21yddap4s3ttwnxj 
+       foreign key (user_id) 
+       references user
+Hibernate: 
+    alter table if exists store 
+       add constraint FKn82wpcqrb21yddap4s3ttwnxj 
+       foreign key (user_id) 
+       references user
+2025-12-22T16:15:03.845+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists store_affiliation 
+       add constraint FKeqyfi9462sh34yjto0hewvgxa 
+       foreign key (affiliation_id) 
+       references affiliation
+Hibernate: 
+    alter table if exists store_affiliation 
+       add constraint FKeqyfi9462sh34yjto0hewvgxa 
+       foreign key (affiliation_id) 
+       references affiliation
+2025-12-22T16:15:03.845+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists store_affiliation 
+       add constraint FK3jjj5rlfffsn2w9vlew633tww 
+       foreign key (store_id) 
+       references store
+Hibernate: 
+    alter table if exists store_affiliation 
+       add constraint FK3jjj5rlfffsn2w9vlew633tww 
+       foreign key (store_id) 
+       references store
+2025-12-22T16:15:03.846+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists store_image 
+       add constraint FK8i0t3yr73c9h244pyv5mg6m4u 
+       foreign key (store_id) 
+       references store
+Hibernate: 
+    alter table if exists store_image 
+       add constraint FK8i0t3yr73c9h244pyv5mg6m4u 
+       foreign key (store_id) 
+       references store
+2025-12-22T16:15:03.846+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists user_affiliation 
+       add constraint FKmeu7ac9b8narjh42h5dpkj00g 
+       foreign key (affiliation_id) 
+       references affiliation
+Hibernate: 
+    alter table if exists user_affiliation 
+       add constraint FKmeu7ac9b8narjh42h5dpkj00g 
+       foreign key (affiliation_id) 
+       references affiliation
+2025-12-22T16:15:03.848+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists user_affiliation 
+       add constraint FKn5jdh5ixk86q51xrug86gi6ng 
+       foreign key (user_id) 
+       references user
+Hibernate: 
+    alter table if exists user_affiliation 
+       add constraint FKn5jdh5ixk86q51xrug86gi6ng 
+       foreign key (user_id) 
+       references user
+2025-12-22T16:15:03.853+09:00  INFO 15192 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-12-22T16:15:05.020+09:00  INFO 15192 --- [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-12-22T16:15:05.328+09:00  WARN 15192 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-12-22T16:15:06.669+09:00  INFO 15192 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-12-22T16:15:06.669+09:00  INFO 15192 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-12-22T16:15:06.672+09:00  INFO 15192 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 3 ms
+2025-12-22T16:15:06.731+09:00  INFO 15192 --- [    Test worker] h.w.d.c.controller.CouponControllerTest  : Started CouponControllerTest in 10.326 seconds (process running for 12.107)
+2025-12-22T16:15:06.951+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+2025-12-22T16:15:07.118+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2025-12-22T16:15:07.216+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:07.394+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+2025-12-22T16:15:07.459+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        owner_profile
+        (business_number, verification_status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        owner_profile
+        (business_number, verification_status, user_id) 
+    values
+        (?, ?, ?)
+2025-12-22T16:15:07.461+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2025-12-22T16:15:07.464+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:07.824+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:07.828+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        customer_profile
+        (university_id, user_id) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        customer_profile
+        (university_id, user_id) 
+    values
+        (?, ?)
+2025-12-22T16:15:07.829+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        store
+        (address, created_at, created_by, introduction, last_modified_by, latitude, longitude, modified_at, name, operating_hours, phone_number, store_category, user_id, store_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        store
+        (address, created_at, created_by, introduction, last_modified_by, latitude, longitude, modified_at, name, operating_hours, phone_number, store_category, user_id, store_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/stores
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJjb3Vwb25Pd25lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX09XTkVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwNywiZXhwIjoxNzY2MzkxMzA3fQ.PX0DbpfYS6aWVKmE_JdDLv3JswyzJZcQhnrKqNFfxc0", Content-Length:"164"]
+             Body = {"name":"Coupon Store","address":"Addr","latitude":null,"longitude":null,"phoneNumber":"Tel","introduction":null,"operatingHours":null,"storeCategory":"RESTAURANT"}
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.store.controller.StoreController
+           Method = hello.wsd.domain.store.controller.StoreController#createStore(PrincipalDetails, CreateStoreRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":true,"data":1}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2025-12-22T16:15:07.898+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:07.905+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        coupon
+        (created_at, created_by, description, issue_ends_at, issue_starts_at, last_modified_by, limit_per_user, modified_at, status, store_id, target_affiliation_id, title, total_quantity, type, coupon_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        coupon
+        (created_at, created_by, description, issue_ends_at, issue_starts_at, last_modified_by, limit_per_user, modified_at, status, store_id, target_affiliation_id, title, total_quantity, type, coupon_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2025-12-22T16:15:07.924+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        count(cc1_0.customer_coupon_id) 
+    from
+        customer_coupon cc1_0 
+    where
+        cc1_0.coupon_id=? 
+        and cc1_0.user_id=?
+Hibernate: 
+    select
+        count(cc1_0.customer_coupon_id) 
+    from
+        customer_coupon cc1_0 
+    where
+        cc1_0.coupon_id=? 
+        and cc1_0.user_id=?
+2025-12-22T16:15:07.930+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        customer_coupon
+        (coupon_id, coupon_code, expires_at, issued_at, status, used_at, user_id, customer_coupon_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        customer_coupon
+        (coupon_id, coupon_code, expires_at, issued_at, status, used_at, user_id, customer_coupon_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/coupons/1/issue
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwidXNlcm5hbWUiOiJjb3Vwb25DdXN0b21lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX0NVU1RPTUVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwNywiZXhwIjoxNzY2MzkxMzA3fQ.C8Lj_-65TWeGrUIRxkPNzoJmnAXBXBucY1Y9ZeYjhZ4"]
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.coupon.controller.CouponController
+           Method = hello.wsd.domain.coupon.controller.CouponController#issueCoupon(Long, PrincipalDetails)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":true,"data":{"customerCouponId":1,"couponCode":"F2A7B407","status":"UNUSED","issuedAt":"2025-12-22T16:15:07.9292874","expiresAt":"2026-01-21T16:15:07.9143999"}}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/stores
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJjb3Vwb25Pd25lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX09XTkVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwNywiZXhwIjoxNzY2MzkxMzA3fQ.PX0DbpfYS6aWVKmE_JdDLv3JswyzJZcQhnrKqNFfxc0", Content-Length:"164"]
+             Body = {"name":"Coupon Store","address":"Addr","latitude":null,"longitude":null,"phoneNumber":"Tel","introduction":null,"operatingHours":null,"storeCategory":"RESTAURANT"}
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.store.controller.StoreController
+           Method = hello.wsd.domain.store.controller.StoreController#createStore(PrincipalDetails, CreateStoreRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":true,"data":1}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/stores/1/coupons
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwidXNlcm5hbWUiOiJjb3Vwb25Pd25lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX09XTkVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwNywiZXhwIjoxNzY2MzkxMzA3fQ.PX0DbpfYS6aWVKmE_JdDLv3JswyzJZcQhnrKqNFfxc0", Content-Length:"250"]
+             Body = {"title":"Free Coupon","description":"Free","targetAffiliationId":null,"issueStartsAt":"2025-12-22T16:15:07.8646419","issueEndsAt":"2025-12-29T16:15:07.8646419","totalQuantity":100,"limitPerUser":1,"type":"GENERAL","status":null,"targetItemIds":null}
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.coupon.controller.CouponController
+           Method = hello.wsd.domain.coupon.controller.CouponController#createCoupon(Long, PrincipalDetails, CreateCouponRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":true,"data":1}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/coupons/1/issue
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwidXNlcm5hbWUiOiJjb3Vwb25DdXN0b21lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX0NVU1RPTUVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwNywiZXhwIjoxNzY2MzkxMzA3fQ.C8Lj_-65TWeGrUIRxkPNzoJmnAXBXBucY1Y9ZeYjhZ4"]
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.coupon.controller.CouponController
+           Method = hello.wsd.domain.coupon.controller.CouponController#issueCoupon(Long, PrincipalDetails)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":true,"data":{"customerCouponId":1,"couponCode":"F2A7B407","status":"UNUSED","issuedAt":"2025-12-22T16:15:07.9292874","expiresAt":"2026-01-21T16:15:07.9143999"}}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2025-12-22T16:15:08.013+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+2025-12-22T16:15:08.099+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2025-12-22T16:15:08.103+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:08.187+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+2025-12-22T16:15:08.292+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        owner_profile
+        (business_number, verification_status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        owner_profile
+        (business_number, verification_status, user_id) 
+    values
+        (?, ?, ?)
+2025-12-22T16:15:08.293+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2025-12-22T16:15:08.296+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:08.371+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:08.373+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        customer_profile
+        (university_id, user_id) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        customer_profile
+        (university_id, user_id) 
+    values
+        (?, ?)
+2025-12-22T16:15:08.374+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        store
+        (address, created_at, created_by, introduction, last_modified_by, latitude, longitude, modified_at, name, operating_hours, phone_number, store_category, user_id, store_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        store
+        (address, created_at, created_by, introduction, last_modified_by, latitude, longitude, modified_at, name, operating_hours, phone_number, store_category, user_id, store_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/stores
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJjb3Vwb25Pd25lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX09XTkVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwOCwiZXhwIjoxNzY2MzkxMzA4fQ.Vg2cKni2_X96_cm5wW4IV3TPdyI2rHXZnqLqFJ5Hex4", Content-Length:"164"]
+             Body = {"name":"Coupon Store","address":"Addr","latitude":null,"longitude":null,"phoneNumber":"Tel","introduction":null,"operatingHours":null,"storeCategory":"RESTAURANT"}
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.store.controller.StoreController
+           Method = hello.wsd.domain.store.controller.StoreController#createStore(PrincipalDetails, CreateStoreRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":true,"data":2}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2025-12-22T16:15:08.383+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:08.384+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        coupon
+        (created_at, created_by, description, issue_ends_at, issue_starts_at, last_modified_by, limit_per_user, modified_at, status, store_id, target_affiliation_id, title, total_quantity, type, coupon_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        coupon
+        (created_at, created_by, description, issue_ends_at, issue_starts_at, last_modified_by, limit_per_user, modified_at, status, store_id, target_affiliation_id, title, total_quantity, type, coupon_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2025-12-22T16:15:08.391+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        count(cc1_0.customer_coupon_id) 
+    from
+        customer_coupon cc1_0 
+    where
+        cc1_0.coupon_id=? 
+        and cc1_0.user_id=?
+Hibernate: 
+    select
+        count(cc1_0.customer_coupon_id) 
+    from
+        customer_coupon cc1_0 
+    where
+        cc1_0.coupon_id=? 
+        and cc1_0.user_id=?
+2025-12-22T16:15:08.393+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        customer_coupon
+        (coupon_id, coupon_code, expires_at, issued_at, status, used_at, user_id, customer_coupon_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        customer_coupon
+        (coupon_id, coupon_code, expires_at, issued_at, status, used_at, user_id, customer_coupon_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, default)
+2025-12-22T16:15:08.400+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        cc1_0.customer_coupon_id,
+        cc1_0.coupon_id,
+        cc1_0.coupon_code,
+        cc1_0.expires_at,
+        cc1_0.issued_at,
+        cc1_0.status,
+        cc1_0.used_at,
+        cc1_0.user_id 
+    from
+        customer_coupon cc1_0 
+    where
+        cc1_0.customer_coupon_id=? 
+        and cc1_0.user_id=?
+Hibernate: 
+    select
+        cc1_0.customer_coupon_id,
+        cc1_0.coupon_id,
+        cc1_0.coupon_code,
+        cc1_0.expires_at,
+        cc1_0.issued_at,
+        cc1_0.status,
+        cc1_0.used_at,
+        cc1_0.user_id 
+    from
+        customer_coupon cc1_0 
+    where
+        cc1_0.customer_coupon_id=? 
+        and cc1_0.user_id=?
+2025-12-22T16:15:08.408+09:00  WARN 15192 --- [    Test worker] h.w.c.exception.GlobalExceptionHandler   : [CustomException] url: /api/my-coupons/0/use | errorType: RESOURCE_NOT_FOUND | message: 쿠폰을 찾을 수 없습니다.
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/my-coupons/0/use
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwidXNlcm5hbWUiOiJjb3Vwb25DdXN0b21lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX0NVU1RPTUVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwOCwiZXhwIjoxNzY2MzkxMzA4fQ.WJl9k6A86ErMOr7vUYBQmCMiiUIv_NXucpKsQqObtBM"]
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.coupon.controller.CouponController
+           Method = hello.wsd.domain.coupon.controller.CouponController#useCoupon(Long, PrincipalDetails)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = hello.wsd.common.exception.CustomException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 404
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":false,"data":{"timestamp":"2025-12-22T16:15:08.4099072","path":"/api/my-coupons/0/use","code":"RESOURCE_NOT_FOUND","message":"쿠폰을 찾을 수 없습니다.","details":null}}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/stores
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJjb3Vwb25Pd25lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX09XTkVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwOCwiZXhwIjoxNzY2MzkxMzA4fQ.Vg2cKni2_X96_cm5wW4IV3TPdyI2rHXZnqLqFJ5Hex4", Content-Length:"164"]
+             Body = {"name":"Coupon Store","address":"Addr","latitude":null,"longitude":null,"phoneNumber":"Tel","introduction":null,"operatingHours":null,"storeCategory":"RESTAURANT"}
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.store.controller.StoreController
+           Method = hello.wsd.domain.store.controller.StoreController#createStore(PrincipalDetails, CreateStoreRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":true,"data":2}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/stores/2/coupons
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwidXNlcm5hbWUiOiJjb3Vwb25Pd25lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX09XTkVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwOCwiZXhwIjoxNzY2MzkxMzA4fQ.Vg2cKni2_X96_cm5wW4IV3TPdyI2rHXZnqLqFJ5Hex4", Content-Length:"245"]
+             Body = {"title":"Use Me","description":"Desc","targetAffiliationId":null,"issueStartsAt":"2025-12-22T16:15:08.3775061","issueEndsAt":"2025-12-29T16:15:08.3775061","totalQuantity":100,"limitPerUser":1,"type":"GENERAL","status":null,"targetItemIds":null}
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.coupon.controller.CouponController
+           Method = hello.wsd.domain.coupon.controller.CouponController#createCoupon(Long, PrincipalDetails, CreateCouponRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":true,"data":2}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/coupons/2/issue
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwidXNlcm5hbWUiOiJjb3Vwb25DdXN0b21lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX0NVU1RPTUVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwOCwiZXhwIjoxNzY2MzkxMzA4fQ.WJl9k6A86ErMOr7vUYBQmCMiiUIv_NXucpKsQqObtBM"]
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.coupon.controller.CouponController
+           Method = hello.wsd.domain.coupon.controller.CouponController#issueCoupon(Long, PrincipalDetails)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":true,"data":{"customerCouponId":2,"couponCode":"A96B6147","status":"UNUSED","issuedAt":"2025-12-22T16:15:08.3926303","expiresAt":"2026-01-21T16:15:08.389601"}}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/my-coupons/0/use
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwidXNlcm5hbWUiOiJjb3Vwb25DdXN0b21lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX0NVU1RPTUVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwOCwiZXhwIjoxNzY2MzkxMzA4fQ.WJl9k6A86ErMOr7vUYBQmCMiiUIv_NXucpKsQqObtBM"]
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.coupon.controller.CouponController
+           Method = hello.wsd.domain.coupon.controller.CouponController#useCoupon(Long, PrincipalDetails)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = hello.wsd.common.exception.CustomException
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 404
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":false,"data":{"timestamp":"2025-12-22T16:15:08.4099072","path":"/api/my-coupons/0/use","code":"RESOURCE_NOT_FOUND","message":"쿠폰을 찾을 수 없습니다.","details":null}}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2025-12-22T16:15:08.428+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+2025-12-22T16:15:08.491+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2025-12-22T16:15:08.494+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:08.558+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+Hibernate: 
+    select
+        u1_0.user_id 
+    from
+        user u1_0 
+    where
+        u1_0.username=? 
+    fetch
+        first ? rows only
+2025-12-22T16:15:08.617+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        owner_profile
+        (business_number, verification_status, user_id) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        owner_profile
+        (business_number, verification_status, user_id) 
+    values
+        (?, ?, ?)
+2025-12-22T16:15:08.617+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        user
+        (created_at, created_by, email, last_modified_by, modified_at, name, password, phone_number, role, social_id, social_type, username, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+2025-12-22T16:15:08.619+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:08.682+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:08.684+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        customer_profile
+        (university_id, user_id) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        customer_profile
+        (university_id, user_id) 
+    values
+        (?, ?)
+2025-12-22T16:15:08.684+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        store
+        (address, created_at, created_by, introduction, last_modified_by, latitude, longitude, modified_at, name, operating_hours, phone_number, store_category, user_id, store_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        store
+        (address, created_at, created_by, introduction, last_modified_by, latitude, longitude, modified_at, name, operating_hours, phone_number, store_category, user_id, store_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/stores
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwidXNlcm5hbWUiOiJjb3Vwb25Pd25lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX09XTkVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwOCwiZXhwIjoxNzY2MzkxMzA4fQ.tN_h1SkSqIyMWPFWJGaSukOFnCyE2gwHX3pnP5_NiNY", Content-Length:"164"]
+             Body = {"name":"Coupon Store","address":"Addr","latitude":null,"longitude":null,"phoneNumber":"Tel","introduction":null,"operatingHours":null,"storeCategory":"RESTAURANT"}
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.store.controller.StoreController
+           Method = hello.wsd.domain.store.controller.StoreController#createStore(PrincipalDetails, CreateStoreRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":true,"data":3}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+2025-12-22T16:15:08.694+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+Hibernate: 
+    select
+        u1_0.user_id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.last_modified_by,
+        u1_0.modified_at,
+        u1_0.name,
+        u1_0.password,
+        u1_0.phone_number,
+        u1_0.role,
+        u1_0.social_id,
+        u1_0.social_type,
+        u1_0.username 
+    from
+        user u1_0 
+    where
+        u1_0.username=?
+2025-12-22T16:15:08.697+09:00 DEBUG 15192 --- [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        coupon
+        (created_at, created_by, description, issue_ends_at, issue_starts_at, last_modified_by, limit_per_user, modified_at, status, store_id, target_affiliation_id, title, total_quantity, type, coupon_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+Hibernate: 
+    insert 
+    into
+        coupon
+        (created_at, created_by, description, issue_ends_at, issue_starts_at, last_modified_by, limit_per_user, modified_at, status, store_id, target_affiliation_id, title, total_quantity, type, coupon_id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, default)
+
+MockHttpServletRequest:
+      HTTP Method = POST
+      Request URI = /api/stores/3/coupons
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8", Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwidXNlcm5hbWUiOiJjb3Vwb25Pd25lckBleGFtcGxlLmNvbSIsInJvbGUiOiJST0xFX09XTkVSIiwidHlwZSI6ImFjY2VzcyIsImlhdCI6MTc2NjM4NzcwOCwiZXhwIjoxNzY2MzkxMzA4fQ.tN_h1SkSqIyMWPFWJGaSukOFnCyE2gwHX3pnP5_NiNY", Content-Length:"257"]
+             Body = {"title":"Discount Coupon","description":"10% Off","targetAffiliationId":null,"issueStartsAt":"2025-12-22T16:15:08.6869166","issueEndsAt":"2025-12-29T16:15:08.6869166","totalQuantity":100,"limitPerUser":1,"type":"GENERAL","status":null,"targetItemIds":null}
+    Session Attrs = {}
+
+Handler:
+             Type = hello.wsd.domain.coupon.controller.CouponController
+           Method = hello.wsd.domain.coupon.controller.CouponController#createCoupon(Long, PrincipalDetails, CreateCouponRequest)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", X-Content-Type-Options:"nosniff", X-XSS-Protection:"0", Cache-Control:"no-cache, no-store, max-age=0, must-revalidate", Pragma:"no-cache", Expires:"0", X-Frame-Options:"DENY"]
+     Content type = application/json
+             Body = {"isSuccess":true,"data":3}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
