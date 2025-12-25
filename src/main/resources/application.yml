@@ -17,15 +17,15 @@ spring:
       max-request-size: 10MB
 
   datasource:
-    url: jdbc:mysql://localhost:3308/wsd?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-    username: root
-    password: "0000"
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3308}/wsd?useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:0000}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
 
   jpa:
     hibernate:
