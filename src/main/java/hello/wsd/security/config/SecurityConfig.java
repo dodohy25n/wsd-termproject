@@ -83,10 +83,9 @@ public class SecurityConfig {
                 // 경로별 인가 작업
                 http
                                 .authorizeHttpRequests((auth) -> auth
-                                                .requestMatchers("/api/**", "/api/auth/**", "/reissue",
-                                                                "/swagger-ui/**", "/v3/api-docs/**", "/health")
-                                                .permitAll()
-                                                // .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                                .requestMatchers("/api/auth/**", "/reissue", "/swagger-ui/**", "/v3/api-docs/**", "/health").permitAll()
+                                                .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/stores/**", "/api/items/**").permitAll()
+                                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                                 .anyRequest().authenticated());
 
                 http.oauth2Login(oauth2 -> oauth2

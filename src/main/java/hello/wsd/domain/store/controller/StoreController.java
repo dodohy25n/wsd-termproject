@@ -1,5 +1,7 @@
 package hello.wsd.domain.store.controller;
 
+import hello.wsd.domain.store.entity.StoreCategory;
+
 import hello.wsd.common.response.SwaggerErrorResponse;
 import hello.wsd.common.response.CommonResponse;
 import hello.wsd.common.response.PageResponse;
@@ -36,7 +38,8 @@ public class StoreController {
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "201", description = "상점 등록 성공"),
                         @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
-                        @ApiResponse(responseCode = "403", description = "권한 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+                        @ApiResponse(responseCode = "403", description = "권한 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
+                        @ApiResponse(responseCode = "409", description = "이미 존재하는 상점 이름", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
         })
         @PostMapping
         public ResponseEntity<CommonResponse<Long>> createStore(
@@ -64,8 +67,10 @@ public class StoreController {
         })
         @GetMapping
         public ResponseEntity<CommonResponse<PageResponse<StoreResponse>>> getStores(
+                        @Parameter(description = "검색 키워드 (상점 이름)") @RequestParam(required = false) String keyword,
+                        @Parameter(description = "카테고리 필터") @RequestParam(required = false) StoreCategory category,
                         @Parameter(description = "페이징 정보 (page, size, sort)") @PageableDefault(size = 10) Pageable pageable) {
-                PageResponse<StoreResponse> response = storeService.getStores(pageable);
+                PageResponse<StoreResponse> response = storeService.getStores(keyword, category, pageable);
                 return ResponseEntity.ok(CommonResponse.success(response));
         }
 
@@ -73,7 +78,8 @@ public class StoreController {
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "상점 수정 성공"),
                         @ApiResponse(responseCode = "403", description = "권한 없음 (본인 소유 상점 아님)", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
-                        @ApiResponse(responseCode = "404", description = "상점 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+                        @ApiResponse(responseCode = "404", description = "상점 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
+                        @ApiResponse(responseCode = "409", description = "이미 존재하는 상점 이름", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
         })
         @PatchMapping("/{storeId}")
         public ResponseEntity<CommonResponse<Void>> updateStore(
@@ -86,7 +92,7 @@ public class StoreController {
 
         @Operation(summary = "상점 삭제", description = "상점을 삭제합니다. (본인 상점만 가능)")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "상점 삭제 성공"),
+                        @ApiResponse(responseCode = "204", description = "상점 삭제 성공"),
                         @ApiResponse(responseCode = "403", description = "권한 없음 (본인 소유 상점 아님)", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
                         @ApiResponse(responseCode = "404", description = "상점 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
         })
@@ -95,6 +101,6 @@ public class StoreController {
                         @Parameter(description = "상점 ID") @PathVariable Long storeId,
                         @Parameter(hidden = true) @AuthenticationPrincipal PrincipalDetails principalDetails) {
                 storeService.deleteStore(storeId, principalDetails.getUser());
-                return ResponseEntity.ok(CommonResponse.success(null));
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(CommonResponse.success(null));
         }
 }

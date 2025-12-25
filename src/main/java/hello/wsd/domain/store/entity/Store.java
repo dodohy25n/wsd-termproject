@@ -9,6 +9,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "store", indexes = @Index(name = "idx_store_name", columnList = "name"))
 public class Store extends BaseEntity {
 
     @Id

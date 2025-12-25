@@ -1,5 +1,6 @@
 package hello.wsd.domain.item.entity;
 
+import hello.wsd.common.entity.BaseEntity;
 import hello.wsd.domain.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +9,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Item {
+public class Item extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

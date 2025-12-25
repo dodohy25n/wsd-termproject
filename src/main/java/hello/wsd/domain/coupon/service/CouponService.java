@@ -138,19 +138,19 @@ public class CouponService {
 
         // Validation
         if (coupon.getStatus() != CouponStatus.ACTIVE) {
-            throw new CustomException(ErrorCode.BAD_REQUEST, "발급 가능한 상태가 아닙니다.");
+            throw new CustomException(ErrorCode.UNPROCESSABLE_ENTITY, "발급 가능한 상태가 아닙니다.");
         }
         LocalDateTime now = LocalDateTime.now();
         if (coupon.getIssueStartsAt() != null && now.isBefore(coupon.getIssueStartsAt())) {
-            throw new CustomException(ErrorCode.BAD_REQUEST, "발급 기간이 아닙니다.");
+            throw new CustomException(ErrorCode.UNPROCESSABLE_ENTITY, "발급 기간이 아닙니다.");
         }
         if (coupon.getIssueEndsAt() != null && now.isAfter(coupon.getIssueEndsAt())) {
-            throw new CustomException(ErrorCode.BAD_REQUEST, "발급 기간이 지났습니다.");
+            throw new CustomException(ErrorCode.UNPROCESSABLE_ENTITY, "발급 기간이 지났습니다.");
         }
 
         Integer userCount = customerCouponRepository.countByCouponAndUser(coupon, user);
         if (userCount >= coupon.getLimitPerUser()) {
-            throw new CustomException(ErrorCode.BAD_REQUEST, "인당 발급 한도를 초과했습니다.");
+            throw new CustomException(ErrorCode.UNPROCESSABLE_ENTITY, "인당 발급 한도를 초과했습니다.");
         }
 
         String code = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
@@ -174,11 +174,11 @@ public class CouponService {
                 .orElseThrow(() -> new CustomException(ErrorCode.RESOURCE_NOT_FOUND, "쿠폰을 찾을 수 없습니다."));
 
         if (customerCoupon.getStatus() == CouponUsageStatus.USED) {
-            throw new CustomException(ErrorCode.BAD_REQUEST, "이미 사용된 쿠폰입니다.");
+            throw new CustomException(ErrorCode.STATE_CONFLICT, "이미 사용된 쿠폰입니다.");
         }
 
         if (customerCoupon.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new CustomException(ErrorCode.BAD_REQUEST, "만료된 쿠폰입니다.");
+            throw new CustomException(ErrorCode.UNPROCESSABLE_ENTITY, "만료된 쿠폰입니다.");
         }
 
         customerCoupon.use();

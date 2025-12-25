@@ -26,101 +26,108 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
-    private final CookieUtil cookieUtil;
+        private final AuthService authService;
+        private final CookieUtil cookieUtil;
 
-    @Operation(summary = "회원가입", description = "새로운 사용자를 등록합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "회원가입 성공"),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
-    })
-    @PostMapping("/signup")
-    public ResponseEntity<CommonResponse<Long>> signUp(@RequestBody SignupRequest request) {
-        Long id = authService.signUp(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.success(id));
-    }
+        @Operation(summary = "회원가입", description = "새로운 사용자를 등록합니다.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "201", description = "회원가입 성공"),
+                        @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
+                        @ApiResponse(responseCode = "409", description = "이미 존재하는 아이디/이메일", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+        })
+        @PostMapping("/signup")
+        public ResponseEntity<CommonResponse<Long>> signUp(@RequestBody SignupRequest request) {
+                Long id = authService.signUp(request);
+                return ResponseEntity.status(HttpStatus.CREATED).body(CommonResponse.success(id));
+        }
 
-    @Operation(summary = "로그인", description = "아이디와 비밀번호로 로그인합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "로그인 성공"),
-            @ApiResponse(responseCode = "400", description = "로그인 실패 (아이디/비밀번호 불일치)", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
-    })
-    @PostMapping("/login")
-    public ResponseEntity<CommonResponse<LoginResponse>> login(@RequestBody LoginRequest request) {
-        AuthTokens authTokens = authService.login(request);
+        @Operation(summary = "로그인", description = "아이디와 비밀번호로 로그인합니다.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "로그인 성공"),
+                        @ApiResponse(responseCode = "400", description = "로그인 실패 (아이디/비밀번호 불일치)", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+        })
+        @PostMapping("/login")
+        public ResponseEntity<CommonResponse<LoginResponse>> login(@RequestBody LoginRequest request) {
+                AuthTokens authTokens = authService.login(request);
 
-        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
+                ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(CommonResponse.success(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn())));
-    }
+                return ResponseEntity.ok()
+                                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                                .body(CommonResponse.success(LoginResponse.of(authTokens.getAccessToken(),
+                                                authTokens.getExpiresIn())));
+        }
 
-    @Operation(summary = "파이어베이스 로그인", description = "파이어베이스 토큰으로 로그인합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "로그인 성공"),
-            @ApiResponse(responseCode = "400", description = "잘못된 토큰", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
-    })
-    @PostMapping("/firebase")
-    public ResponseEntity<CommonResponse<LoginResponse>> loginByFirebase(@RequestBody Map<String, String> payload) {
-        String token = payload.get("token");
-        AuthTokens authTokens = authService.loginByFirebase(token);
+        @Operation(summary = "파이어베이스 로그인", description = "파이어베이스 토큰으로 로그인합니다.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "로그인 성공"),
+                        @ApiResponse(responseCode = "400", description = "잘못된 토큰", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+        })
+        @PostMapping("/firebase")
+        public ResponseEntity<CommonResponse<LoginResponse>> loginByFirebase(@RequestBody Map<String, String> payload) {
+                String token = payload.get("token");
+                AuthTokens authTokens = authService.loginByFirebase(token);
 
-        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
+                ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(CommonResponse.success(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn())));
-    }
+                return ResponseEntity.ok()
+                                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                                .body(CommonResponse.success(LoginResponse.of(authTokens.getAccessToken(),
+                                                authTokens.getExpiresIn())));
+        }
 
-    @Operation(summary = "토큰 갱신", description = "RefreshToken으로 AccessToken을 갱신합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "토큰 갱신 성공"),
-            @ApiResponse(responseCode = "401", description = "유효하지 않은 RefreshToken", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
-    })
-    @PostMapping("/refresh")
-    public ResponseEntity<CommonResponse<LoginResponse>> refresh(
-            @CookieValue(value = "refreshToken", required = false) String refreshToken) {
-        AuthTokens authTokens = authService.refresh(refreshToken);
+        @Operation(summary = "토큰 갱신", description = "RefreshToken으로 AccessToken을 갱신합니다.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "토큰 갱신 성공"),
+                        @ApiResponse(responseCode = "401", description = "유효하지 않은 RefreshToken", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+        })
+        @PostMapping("/refresh")
+        public ResponseEntity<CommonResponse<LoginResponse>> refresh(
+                        @CookieValue(value = "refreshToken", required = false) String refreshToken) {
+                AuthTokens authTokens = authService.refresh(refreshToken);
 
-        // RRT 적용
-        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
+                // RRT 적용
+                ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(CommonResponse.success(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn())));
-    }
+                return ResponseEntity.ok()
+                                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                                .body(CommonResponse.success(LoginResponse.of(authTokens.getAccessToken(),
+                                                authTokens.getExpiresIn())));
+        }
 
-    @Operation(summary = "로그아웃", description = "사용자를 로그아웃 처리합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "로그아웃 성공")
-    })
-    @PostMapping("/logout")
-    public ResponseEntity<CommonResponse<Void>> logout(
-            @CookieValue(value = "refreshToken", required = false) String refreshToken) {
-        authService.logout(refreshToken);
+        @Operation(summary = "로그아웃", description = "사용자를 로그아웃 처리합니다.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "로그아웃 성공")
+        })
+        @PostMapping("/logout")
+        public ResponseEntity<CommonResponse<Void>> logout(
+                        @CookieValue(value = "refreshToken", required = false) String refreshToken) {
+                authService.logout(refreshToken);
 
-        ResponseCookie deleteCookie = cookieUtil.createExpiredCookie("refreshToken");
+                ResponseCookie deleteCookie = cookieUtil.createExpiredCookie("refreshToken");
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
-                .body(CommonResponse.success(null));
-    }
+                return ResponseEntity.ok()
+                                .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
+                                .body(CommonResponse.success(null));
+        }
 
-    @Operation(summary = "소셜 회원가입 완료", description = "소셜 로그인 후 추가 정보를 입력하여 회원가입을 완료합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "회원가입 완료 성공"),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
-    })
-    @PostMapping("/complete-social-signup")
-    public ResponseEntity<CommonResponse<LoginResponse>> completeSocialSignup(Long userId,
-            CompleteSocialSignupRequest request) {
-        AuthTokens authTokens = authService.completeSocialSignup(userId, request);
+        @Operation(summary = "소셜 회원가입 완료", description = "소셜 로그인 후 추가 정보를 입력하여 회원가입을 완료합니다.")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "회원가입 완료 성공"),
+                        @ApiResponse(responseCode = "400", description = "잘못된 요청", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
+                        @ApiResponse(responseCode = "404", description = "사용자 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
+                        @ApiResponse(responseCode = "409", description = "이미 존재하는 소셜 정보", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+        })
+        @PostMapping("/complete-social-signup")
+        public ResponseEntity<CommonResponse<LoginResponse>> completeSocialSignup(Long userId,
+                        CompleteSocialSignupRequest request) {
+                AuthTokens authTokens = authService.completeSocialSignup(userId, request);
 
-        ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
+                ResponseCookie refreshCookie = cookieUtil.createRefreshTokenCookie(authTokens.getRefreshToken());
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-                .body(CommonResponse.success(LoginResponse.of(authTokens.getAccessToken(), authTokens.getExpiresIn())));
-    }
+                return ResponseEntity.ok()
+                                .header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
+                                .body(CommonResponse.success(LoginResponse.of(authTokens.getAccessToken(),
+                                                authTokens.getExpiresIn())));
+        }
 }

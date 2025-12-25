@@ -1,5 +1,7 @@
 package hello.wsd.domain.store.service;
 
+import hello.wsd.domain.store.entity.StoreCategory;
+
 import hello.wsd.common.exception.CustomException;
 import hello.wsd.common.exception.ErrorCode;
 import hello.wsd.common.response.PageResponse;
@@ -37,6 +39,10 @@ public class StoreService {
             throw new CustomException(ErrorCode.FORBIDDEN);
         }
 
+        if (storeRepository.existsByName(request.getName())) {
+            throw new CustomException(ErrorCode.DUPLICATE_RESOURCE, "이미 존재하는 상점 이름입니다.");
+        }
+
         Store store = request.toEntity(owner);
         Store savedStore = storeRepository.save(store);
         return savedStore.getId();
@@ -49,8 +55,18 @@ public class StoreService {
         return StoreResponse.from(store);
     }
 
-    public PageResponse<StoreResponse> getStores(Pageable pageable) {
-        Page<Store> storePage = storeRepository.findAll(pageable);
+    public PageResponse<StoreResponse> getStores(String keyword, StoreCategory category, Pageable pageable) {
+        Page<Store> storePage;
+
+        if (keyword != null && category != null) {
+            storePage = storeRepository.findByNameContainingAndStoreCategory(keyword, category, pageable);
+        } else if (keyword != null) {
+            storePage = storeRepository.findByNameContaining(keyword, pageable);
+        } else if (category != null) {
+            storePage = storeRepository.findByStoreCategory(category, pageable);
+        } else {
+            storePage = storeRepository.findAll(pageable);
+        }
 
         Page<StoreResponse> responsePage = storePage.map(StoreResponse::from);
         return PageResponse.from(responsePage);
@@ -67,6 +83,10 @@ public class StoreService {
         // 본인 소유 확인
         if (!Objects.equals(store.getUser().getId(), owner.getId())) {
             throw new CustomException(ErrorCode.FORBIDDEN, "본인 소유의 가게가 아닙니다.");
+        }
+
+        if (!store.getName().equals(request.getName()) && storeRepository.existsByName(request.getName())) {
+            throw new CustomException(ErrorCode.DUPLICATE_RESOURCE, "이미 존재하는 상점 이름입니다.");
         }
 
         store.updateStore(

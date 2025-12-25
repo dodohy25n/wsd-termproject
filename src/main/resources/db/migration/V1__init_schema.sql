@@ -96,6 +96,10 @@ CREATE TABLE IF NOT EXISTS `item` (
     `description` TEXT,
     `image_url` VARCHAR(255),
     `is_sold_out` BOOLEAN NOT NULL DEFAULT FALSE,
+    `created_at` DATETIME(6) NOT NULL,
+    `modified_at` DATETIME(6) NOT NULL,
+    `created_by` VARCHAR(255),
+    `last_modified_by` VARCHAR(255),
     CONSTRAINT `fk_item_store` FOREIGN KEY (`store_id`) REFERENCES `store` (`store_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

@@ -4,6 +4,7 @@ import hello.wsd.common.exception.CustomException;
 import hello.wsd.common.exception.ErrorCode;
 import hello.wsd.domain.review.dto.CreateReviewRequest;
 import hello.wsd.domain.review.dto.ReviewResponse;
+import hello.wsd.domain.review.dto.ReviewStatsResponse;
 import hello.wsd.domain.review.dto.UpdateReviewRequest;
 import hello.wsd.domain.review.entity.Review;
 import hello.wsd.domain.review.repository.ReviewRepository;
@@ -28,6 +29,10 @@ public class ReviewService {
     public Long createReview(User user, Long storeId, CreateReviewRequest request) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
+
+        if (reviewRepository.existsByUserAndStore(user, store)) {
+            throw new CustomException(ErrorCode.DUPLICATE_RESOURCE, "이미 해당 상점에 대한 리뷰를 작성했습니다.");
+        }
 
         Review review = Review.builder()
                 .user(user)
@@ -73,5 +78,25 @@ public class ReviewService {
 
         return reviewRepository.findByStore(store, pageable)
                 .map(ReviewResponse::from);
+    }
+
+    public ReviewStatsResponse getReviewStats(Long storeId) {
+        Double avgRating = reviewRepository.findAverageRatingByStoreId(storeId);
+        Long totalReviews = reviewRepository.countByStoreId(storeId);
+        Long rating1 = reviewRepository.countByStoreIdAndRating(storeId, 1);
+        Long rating2 = reviewRepository.countByStoreIdAndRating(storeId, 2);
+        Long rating3 = reviewRepository.countByStoreIdAndRating(storeId, 3);
+        Long rating4 = reviewRepository.countByStoreIdAndRating(storeId, 4);
+        Long rating5 = reviewRepository.countByStoreIdAndRating(storeId, 5);
+
+        return ReviewStatsResponse.builder()
+                .averageRating(avgRating != null ? avgRating : 0.0)
+                .totalReviews(totalReviews != null ? totalReviews : 0L)
+                .rating1Count(rating1 != null ? rating1 : 0L)
+                .rating2Count(rating2 != null ? rating2 : 0L)
+                .rating3Count(rating3 != null ? rating3 : 0L)
+                .rating4Count(rating4 != null ? rating4 : 0L)
+                .rating5Count(rating5 != null ? rating5 : 0L)
+                .build();
     }
 }
