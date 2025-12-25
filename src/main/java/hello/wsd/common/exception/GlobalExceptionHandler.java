@@ -94,6 +94,36 @@ public class GlobalExceptionHandler {
                                 .body(CommonResponse.fail(errorResponse));
         }
 
+        // 405 에러
+        @ExceptionHandler(org.springframework.web.HttpRequestMethodNotSupportedException.class)
+        public ResponseEntity<CommonResponse<ErrorResponse>> handleMethodNotSupportedException(
+                        org.springframework.web.HttpRequestMethodNotSupportedException e,
+                        HttpServletRequest request) {
+
+                ErrorCode errorCode = ErrorCode.METHOD_NOT_ALLOWED;
+
+                log.info("[MethodNotAllowed] url: {} | message: {}", request.getRequestURI(), e.getMessage());
+
+                ErrorResponse errorResponse = ErrorResponse.of(errorCode, e.getMessage(), request.getRequestURI());
+
+                return ResponseEntity.status(errorCode.getHttpStatus()).body(CommonResponse.fail(errorResponse));
+        }
+
+        // 415 에러
+        @ExceptionHandler(org.springframework.web.HttpMediaTypeNotSupportedException.class)
+        public ResponseEntity<CommonResponse<ErrorResponse>> handleMediaTypeNotSupportedException(
+                        org.springframework.web.HttpMediaTypeNotSupportedException e,
+                        HttpServletRequest request) {
+
+                ErrorCode errorCode = ErrorCode.UNSUPPORTED_MEDIA_TYPE;
+
+                log.info("[UnsupportedMediaType] url: {} | message: {}", request.getRequestURI(), e.getMessage());
+
+                ErrorResponse errorResponse = ErrorResponse.of(errorCode, e.getMessage(), request.getRequestURI());
+
+                return ResponseEntity.status(errorCode.getHttpStatus()).body(CommonResponse.fail(errorResponse));
+        }
+
         // 나머지 모든 예외 처리
         @ExceptionHandler(Exception.class)
         public ResponseEntity<CommonResponse<ErrorResponse>> handleAllException(

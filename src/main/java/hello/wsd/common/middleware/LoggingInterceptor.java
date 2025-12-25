@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Slf4j
 @Component
-public class LoggingIntercepter implements HandlerInterceptor {
+public class LoggingInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -23,14 +23,15 @@ public class LoggingIntercepter implements HandlerInterceptor {
         long startTime = System.currentTimeMillis();
         request.setAttribute("startTime", startTime);
 
-        //요청 로그 출력
+        // 요청 로그 출력
         log.info("[REQUEST] [{}] {} {}", requestId, request.getMethod(), request.getRequestURI());
 
         return true;
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
+            Exception ex) {
         String requestId = (String) request.getAttribute("requestId");
         long startTime = (Long) request.getAttribute("startTime");
         long endTime = System.currentTimeMillis();

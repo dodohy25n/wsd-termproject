@@ -32,6 +32,12 @@ public enum ErrorCode {
     DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "데이터가 이미 존재합니다."),
     STATE_CONFLICT(HttpStatus.CONFLICT, "리소스 상태가 충돌합니다."),
 
+    // 405 Method Not Allowed
+    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "허용되지 않는 HTTP 메서드입니다."),
+
+    // 415 Unsupported Media Type
+    UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "지원하지 않는 미디어 타입입니다."),
+
     // 422 Unprocessable Entity
     UNPROCESSABLE_ENTITY(HttpStatus.UNPROCESSABLE_ENTITY, "요청은 올바르나 처리할 수 없습니다."),
 

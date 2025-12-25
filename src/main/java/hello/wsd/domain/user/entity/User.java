@@ -78,4 +78,8 @@ public class User extends BaseEntity {
     public void setUserId(Long userId) {
         this.id = userId;
     }
+
+    public void changeRole(Role newRole) {
+        this.role = newRole;
+    }
 }

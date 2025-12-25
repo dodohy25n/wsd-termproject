@@ -27,75 +27,77 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtFilter jwtFilter;
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+        private final JwtFilter jwtFilter;
+        private final CustomOAuth2UserService customOAuth2UserService;
+        private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+                return configuration.getAuthenticationManager();
+        }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173")); // 프론트 주소
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-        configuration.setExposedHeaders(List.of("Authorization", "Set-Cookie"));
-        configuration.setMaxAge(3600L);
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(List.of("http://localhost:5173")); // 프론트 주소
+                configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                configuration.setAllowedHeaders(List.of("*"));
+                configuration.setAllowCredentials(true);
+                configuration.setExposedHeaders(List.of("Authorization", "Set-Cookie"));
+                configuration.setMaxAge(3600L);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", configuration);
+                return source;
+        }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        // csrf disable
-        http
-                .csrf((auth) -> auth.disable());
+                // csrf disable
+                http
+                                .csrf((auth) -> auth.disable());
 
-        // From 로그인 방식 disable
-        http
-                .formLogin((auth) -> auth.disable());
+                // From 로그인 방식 disable
+                http
+                                .formLogin((auth) -> auth.disable());
 
-        // http basic 인증 방식 disable
-        http
-                .httpBasic((auth) -> auth.disable());
+                // http basic 인증 방식 disable
+                http
+                                .httpBasic((auth) -> auth.disable());
 
-        // 세션 설정
-        http
-                .sessionManagement((session) -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                // 세션 설정
+                http
+                                .sessionManagement((session) -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // CORS 설정
-        http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+                // CORS 설정
+                http
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
-        //경로별 인가 작업
-        http
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/**","/api/auth/**",  "/reissue", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        //.requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated());
+                // 경로별 인가 작업
+                http
+                                .authorizeHttpRequests((auth) -> auth
+                                                .requestMatchers("/api/**", "/api/auth/**", "/reissue",
+                                                                "/swagger-ui/**", "/v3/api-docs/**", "/health")
+                                                .permitAll()
+                                                // .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                                                .anyRequest().authenticated());
 
-        http.oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService) // 유저 정보 로드 서비스
-                        )
-                        .successHandler(oAuth2LoginSuccessHandler) // 로그인 성공 시 핸들러
-        );
+                http.oauth2Login(oauth2 -> oauth2
+                                .userInfoEndpoint(userInfo -> userInfo
+                                                .userService(customOAuth2UserService) // 유저 정보 로드 서비스
+                                )
+                                .successHandler(oAuth2LoginSuccessHandler) // 로그인 성공 시 핸들러
+                );
 
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+                return http.build();
+        }
 }

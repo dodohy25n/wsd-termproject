@@ -19,14 +19,12 @@ public class AuthManageService {
     private static final String PREFIX = "RT:";
 
     // 특정 유저 리프레시 토큰 조회
-
-    public String getByUserId(Long userId) {
+    public String getToken(Long userId) {
         return redisTemplate.opsForValue().get(PREFIX + userId);
     }
 
     // 특정 유저 리프레시 토큰 삭제
-    
-    public void delete(Long userId) {
+    public void deleteToken(Long userId) {
         redisTemplate.delete(PREFIX + userId);
     }
 
