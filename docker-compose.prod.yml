@@ -21,8 +21,10 @@ services:
       - KAKAO_CLIENT_SECRET=${KAKAO_CLIENT_SECRET}
       - JWT_SECRET=${JWT_SECRET}
     depends_on:
-      - mysql
-      - redis
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - wsd-network
 
@@ -40,16 +42,27 @@ services:
       - mysql_data:/var/lib/mysql
     networks:
       - wsd-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${DB_USER}", "-p${DB_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
   redis:
     image: redis:alpine
     container_name: wsd-redis
     restart: always
+    command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
     networks:
       - wsd-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   wsd-network:
