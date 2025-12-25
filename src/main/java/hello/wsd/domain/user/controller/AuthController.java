@@ -44,7 +44,8 @@ public class AuthController {
         @Operation(summary = "로그인", description = "아이디와 비밀번호로 로그인합니다.")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "로그인 성공"),
-                        @ApiResponse(responseCode = "400", description = "로그인 실패 (아이디/비밀번호 불일치)", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+                        @ApiResponse(responseCode = "400", description = "로그인 실패 (아이디/비밀번호 불일치)", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
+                        @ApiResponse(responseCode = "401", description = "인증 실패", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
         })
         @PostMapping("/login")
         public ResponseEntity<CommonResponse<LoginResponse>> login(@RequestBody LoginRequest request) {
@@ -79,7 +80,8 @@ public class AuthController {
         @Operation(summary = "토큰 갱신", description = "RefreshToken으로 AccessToken을 갱신합니다.")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "토큰 갱신 성공"),
-                        @ApiResponse(responseCode = "401", description = "유효하지 않은 RefreshToken", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+                        @ApiResponse(responseCode = "401", description = "유효하지 않은 RefreshToken", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
+                        @ApiResponse(responseCode = "404", description = "사용자 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
         })
         @PostMapping("/refresh")
         public ResponseEntity<CommonResponse<LoginResponse>> refresh(

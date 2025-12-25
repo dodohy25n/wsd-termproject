@@ -27,6 +27,14 @@ public class FavoriteService {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new CustomException(ErrorCode.STORE_NOT_FOUND));
 
+        if (store.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.BAD_REQUEST, "자신의 상점은 즐겨찾기할 수 없습니다.");
+        }
+
+        if (store.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.BAD_REQUEST, "자신의 상점은 즐겨찾기할 수 없습니다.");
+        }
+
         if (favoriteRepository.existsByUserAndStore(user, store)) {
             throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
         }

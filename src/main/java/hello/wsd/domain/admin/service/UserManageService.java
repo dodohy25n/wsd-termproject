@@ -46,6 +46,10 @@ public class UserManageService {
         userRepository.delete(user);
 
         // 리프레시 토큰도 함께 삭제
-        authManageService.deleteToken(userId);
+        try {
+            authManageService.deleteToken(userId);
+        } catch (CustomException e) {
+            // 토큰이 없어도 회원 탈퇴는 진행되어야 함 (무시)
+        }
     }
 }

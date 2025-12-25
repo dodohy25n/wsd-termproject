@@ -36,7 +36,7 @@ public class CouponController {
         @Operation(summary = "쿠폰 생성", description = "상점의 새로운 쿠폰을 생성합니다. (점주 권한 필요)")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "201", description = "쿠폰 생성 성공"),
-                        @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
+                        @ApiResponse(responseCode = "400", description = "잘못된 요청 데이터 (타 상점 물품 등)", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
                         @ApiResponse(responseCode = "403", description = "권한 없음 (본인 소유 상점 아님)", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
                         @ApiResponse(responseCode = "404", description = "상점 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
         })
@@ -108,8 +108,7 @@ public class CouponController {
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "쿠폰 발급 성공"),
                         @ApiResponse(responseCode = "404", description = "쿠폰 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
-                        @ApiResponse(responseCode = "422", description = "재고 소진 / 발급 기간 아님 - 논리적 오류", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
-                        @ApiResponse(responseCode = "409", description = "이미 발급된 쿠폰", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+                        @ApiResponse(responseCode = "422", description = "재고 소진 / 발급 기간 아님 / 한도 초과", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
         })
         @PostMapping("/coupons/{couponId}/issue")
         public ResponseEntity<CommonResponse<IssueCouponResponse>> issueCoupon(

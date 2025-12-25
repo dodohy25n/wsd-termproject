@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
         // 인증 실패 에러
         @ExceptionHandler(AuthenticationException.class)
         public ResponseEntity<CommonResponse<ErrorResponse>> handleAuthenticationException(
-                        AccessDeniedException e,
+                        AuthenticationException e,
                         HttpServletRequest request) {
 
                 ErrorCode errorCode = ErrorCode.UNAUTHORIZED;

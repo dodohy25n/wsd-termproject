@@ -1,6 +1,8 @@
 package hello.wsd.domain.admin.service;
 
 import hello.wsd.domain.admin.dto.RefreshTokenResponse;
+import hello.wsd.common.exception.CustomException;
+import hello.wsd.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,12 +22,17 @@ public class AuthManageService {
 
     // 특정 유저 리프레시 토큰 조회
     public String getToken(Long userId) {
+
         return redisTemplate.opsForValue().get(PREFIX + userId);
     }
 
     // 특정 유저 리프레시 토큰 삭제
     public void deleteToken(Long userId) {
-        redisTemplate.delete(PREFIX + userId);
+        String key = PREFIX + userId;
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
+            throw new CustomException(ErrorCode.RESOURCE_NOT_FOUND, "해당 사용자의 토큰이 존재하지 않습니다.");
+        }
+        redisTemplate.delete(key);
     }
 
     // 모든 리프레시 토큰 조회

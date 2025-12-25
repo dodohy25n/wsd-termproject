@@ -48,7 +48,7 @@ public class FavoriteController {
         @Operation(summary = "상점 즐겨찾기 취소", description = "단골 상점 등록을 취소합니다.")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "204", description = "즐겨찾기 취소 성공"),
-                        @ApiResponse(responseCode = "404", description = "즐겨찾기 내역 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+                        @ApiResponse(responseCode = "404", description = "상점 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
         })
         @DeleteMapping("/stores/{storeId}/favorites")
         public ResponseEntity<CommonResponse<Void>> removeFavorite(

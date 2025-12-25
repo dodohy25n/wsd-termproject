@@ -1,5 +1,7 @@
 package hello.wsd.domain.admin.controller;
 
+import hello.wsd.common.exception.CustomException;
+import hello.wsd.common.exception.ErrorCode;
 import hello.wsd.common.response.CommonResponse;
 import hello.wsd.domain.admin.dto.RefreshTokenResponse;
 import hello.wsd.domain.admin.service.AuthManageService;
@@ -45,6 +47,9 @@ public class AuthManageController {
     public ResponseEntity<CommonResponse<String>> getUserRefreshToken(
             @Parameter(description = "사용자 ID") @PathVariable Long userId) {
         String token = authManageService.getToken(userId);
+        if (token == null) {
+            throw new CustomException(ErrorCode.RESOURCE_NOT_FOUND, "토큰 정보가 없습니다.");
+        }
         return ResponseEntity.ok(CommonResponse.success(token));
     }
 
@@ -52,7 +57,7 @@ public class AuthManageController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "토큰 삭제 성공"),
             @ApiResponse(responseCode = "403", description = "권한 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class))),
-            @ApiResponse(responseCode = "404", description = "토큰/사용자 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
+            @ApiResponse(responseCode = "404", description = "토큰 없음", content = @Content(schema = @Schema(implementation = SwaggerErrorResponse.class)))
     })
     @DeleteMapping("/tokens/{userId}")
     public ResponseEntity<CommonResponse<Void>> deleteUserRefreshToken(
