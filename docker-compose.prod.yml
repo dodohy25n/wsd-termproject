@@ -6,12 +6,12 @@ services:
     container_name: wsd-termproject
     restart: always
     ports:
-      - "3000:8080"
+      - "3210:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - DB_HOST=mysql
       - DB_PORT=3306
-      - DB_USER=${DB_USER}
+      - DB_USER=root
       - DB_PASSWORD=${DB_PASSWORD}
       - REDIS_HOST=redis
       - REDIS_PORT=6379
