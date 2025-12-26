@@ -2,8 +2,8 @@ package hello.wsd.domain.coupon.service;
 
 import hello.wsd.common.exception.CustomException;
 import hello.wsd.common.exception.ErrorCode;
-import hello.wsd.domain.affliation.entity.Affiliation;
-import hello.wsd.domain.affliation.repository.AffiliationRepository;
+import hello.wsd.domain.affiliation.entity.Affiliation;
+import hello.wsd.domain.affiliation.repository.AffiliationRepository;
 import hello.wsd.domain.coupon.dto.*;
 import hello.wsd.domain.coupon.entity.*;
 import hello.wsd.domain.coupon.repository.*;

@@ -1,4 +1,4 @@
-package hello.wsd.domain.affliation.entity;
+package hello.wsd.domain.affiliation.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -85,3 +85,7 @@ jwt:
   secret: ${JWT_SECRET:"dnpqtjqltmtjfrPrhkwpfmfgkrhdlTdjdydnpqtjqltmtjfrPdnpqtjqltmtjfrPdnpqdnpqdnpqdnpq"}
   access-expiration: 3600000 # 1시간
   refresh-expiration: 1209600000 # 14일
+
+app:
+  firebase:
+    key-path: ${FIREBASE_KEY_PATH:classpath:firebase-key.json}

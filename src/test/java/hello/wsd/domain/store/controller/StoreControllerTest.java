@@ -1,7 +1,7 @@
 package hello.wsd.domain.store.controller;
 
-import hello.wsd.domain.affliation.entity.University;
-import hello.wsd.domain.affliation.repository.UniversityRepository;
+import hello.wsd.domain.affiliation.entity.University;
+import hello.wsd.domain.affiliation.repository.UniversityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import hello.wsd.common.BaseIntegrationTest;

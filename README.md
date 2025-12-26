@@ -113,9 +113,9 @@ java -jar build/libs/wsd-termproject-0.0.1-SNAPSHOT.jar
 본 프로젝트는 학교 JCloud 인프라에 배포되었습니다.
 CI/CD 파이프라인(GitHub Actions)을 통해 메인 브랜치 푸시 시 자동 배포됩니다.
 
-*   **배포 URL**: [http://175.123.55.182:3210](http://113.198.66.68:13233/swagger-ui/index.html)
-*   **API 문서 (Swagger UI)**: [http://175.123.55.182:3210/docs](http://113.198.66.68:13233/swagger-ui/index.html)
-*   **Health Check**: [http://175.123.55.182:3210/health](http://113.198.66.68:13233/health)
+*   **배포 URL**: [http://175.123.55.182:3210](http://175.123.55.182:3210)
+*   **API 문서 (Swagger UI)**: [http://175.123.55.182:3210/docs](http://175.123.55.182:3210/docs)
+*   **Health Check**: [http://175.123.55.182:3210/health](http://175.123.55.182:3210/health)
 
 ### 5.2. 배포 아키텍처 및 CI/CD
 
@@ -139,6 +139,10 @@ CI/CD 파이프라인(GitHub Actions)을 통해 메인 브랜치 푸시 시 자�
 #### 배포 환경 (Docker)
 *   **Base Image**: `eclipse-temurin:17-jre-jammy`
 *   **Multi-stage Build**: 빌드(Gradle)와 실행(JRE) 단계를 분리하여 이미지 크기를 최적화했습니다.
+*   **Logging (ELK Stack)**:
+    - **Logstash**: Spring Boot 앱에서 발생한 로그를 TCP(5000)로 수집합니다.
+    - **Elasticsearch**: 수집된 로그를 인덱싱하고 저장합니다.
+    - **Kibana**: 저장된 로그를 시각화하고 검색할 수 있는 대시보드를 제공합니다 (Port: 5601).
 
 ---
 
@@ -335,6 +339,16 @@ CI/CD 파이프라인(GitHub Actions)을 통해 메인 브랜치 푸시 시 자�
 
 5.  **패스워드 암호화**
     - `BCryptPasswordEncoder`를 사용하여 사용자 비밀번호를 안전하게 해시 암호화하여 저장합니다.
+
+### 모니터링 및 로깅 (Observability)
+
+1.  **ELK Stack (Elasticsearch, Logstash, Kibana)**
+    - **분산 로깅**: Docker 컨테이너 환경에서 발생하는 로그를 Logstash(TCP)로 수집하여 Elasticsearch에 중앙 집중식으로 저장합니다.
+    - **시각화**: Kibana 대시보드를 통해 실시간 로그 검색 및 통계 확인이 가능하며, `http://175.123.55.182:5601` 포트를 통해 접근할 수 있습니다.
+
+2.  **구조화된 로깅 (SLF4J & Logback)**
+    - 주요 비즈니스 로직(`AuthService`, `StoreService` 등)에 **INFO**(성공), **WARN**(실패/예외) 레벨을 구분하여 로그를 남깁니다.
+    - `logstash-logback-encoder`를 사용하여 로그를 JSON 포맷으로 구조화, 필드별 검색 및 분석 용이성을 확보했습니다.
 ---
 
 ## 11. 한계와 개선 계획
@@ -360,6 +374,5 @@ CI/CD 파이프라인(GitHub Actions)을 통해 메인 브랜치 푸시 시 자�
 4.  **검색 성능 고도화**
     - MySQL Full-Text Index 또는 Elasticsearch 도입을 통해 검색 성능 및 정확도 개선.
 
-5.  **모니터링 & 로깅 (Observability)**
+5.  **모니터링 고도화**
     - Prometheus + Grafana를 도입하여 JVM, Connection Pool 상태를 시각화.
-    - ELK Stack을 통해 분산 로깅 환경 구축 및 에러 추적 용이성 확보.

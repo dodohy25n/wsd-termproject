@@ -14,6 +14,7 @@ import hello.wsd.domain.user.entity.Role;
 import hello.wsd.domain.user.repository.UserRepository;
 import hello.wsd.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class StoreService {
 
     private final StoreRepository storeRepository;
@@ -36,15 +38,18 @@ public class StoreService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         if (owner.getRole() != Role.ROLE_OWNER) {
+            log.warn("[CreateStore] Forbidden access. userId={}, role={}", user.getId(), owner.getRole());
             throw new CustomException(ErrorCode.FORBIDDEN);
         }
 
         if (storeRepository.existsByName(request.getName())) {
+            log.warn("[CreateStore] Duplicate store name: {}", request.getName());
             throw new CustomException(ErrorCode.DUPLICATE_RESOURCE, "이미 존재하는 상점 이름입니다.");
         }
 
         Store store = request.toEntity(owner);
         Store savedStore = storeRepository.save(store);
+        log.info("[CreateStore] Success. storeId={}, ownerId={}", savedStore.getId(), owner.getId());
         return savedStore.getId();
     }
 
@@ -82,6 +87,7 @@ public class StoreService {
 
         // 본인 소유 확인
         if (!Objects.equals(store.getUser().getId(), owner.getId())) {
+            log.warn("[UpdateStore] Forbidden attempt. storeId={}, requesterUserId={}", storeId, owner.getId());
             throw new CustomException(ErrorCode.FORBIDDEN, "본인 소유의 가게가 아닙니다.");
         }
 
@@ -98,6 +104,7 @@ public class StoreService {
                 request.getIntroduction(),
                 request.getOperatingHours(),
                 request.getStoreCategory());
+        log.info("[UpdateStore] Success. storeId={}", storeId);
     }
 
     @Transactional
@@ -110,9 +117,11 @@ public class StoreService {
 
         // 본인 소유 확인
         if (!Objects.equals(store.getUser().getId(), owner.getId())) {
+            log.warn("[DeleteStore] Forbidden attempt. storeId={}, requesterUserId={}", storeId, owner.getId());
             throw new CustomException(ErrorCode.FORBIDDEN, "본인 소유의 가게가 아닙니다.");
         }
 
         storeRepository.delete(store);
+        log.info("[DeleteStore] Success. storeId={}", storeId);
     }
 }

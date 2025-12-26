@@ -4,8 +4,8 @@ package hello.wsd.domain.user.service;
 import com.google.firebase.auth.FirebaseToken;
 import hello.wsd.common.exception.CustomException;
 import hello.wsd.common.exception.ErrorCode;
-import hello.wsd.domain.affliation.entity.University;
-import hello.wsd.domain.affliation.repository.UniversityRepository;
+import hello.wsd.domain.affiliation.entity.University;
+import hello.wsd.domain.affiliation.repository.UniversityRepository;
 import hello.wsd.domain.user.dto.AuthTokens;
 import hello.wsd.domain.user.dto.CompleteSocialSignupRequest;
 import hello.wsd.domain.user.dto.LoginRequest;
@@ -18,6 +18,7 @@ import hello.wsd.security.details.PrincipalDetails;
 import hello.wsd.security.jwt.JwtTokenProvider;
 import hello.wsd.security.service.FirebaseAuthService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;
@@ -45,6 +47,7 @@ public class AuthService {
     public Long signUp(SignupRequest request) {
 
         if (userRepository.existsByUsername(request.getEmail())) {
+            log.warn("[SignUp] Duplicate email attempt: {}", request.getEmail());
             throw new CustomException(ErrorCode.DUPLICATE_RESOURCE, "이미 가입된 이메일 입니다.");
         }
 
@@ -67,6 +70,8 @@ public class AuthService {
             createOwnerProfile(user, request.getBusinessNumber());
         }
 
+        log.info("[SignUp] User created successfully. userId={}, email={}, role={}", id, user.getEmail(),
+                user.getRole());
         return id;
     }
 
@@ -79,8 +84,10 @@ public class AuthService {
             PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
             User user = principal.getUser();
 
+            log.info("[Login] Success. userId={}, email={}", user.getId(), user.getEmail());
             return generateTokenResponse(user);
         } catch (BadCredentialsException e) {
+            log.warn("[Login] Failed. Invalid credentials for username: {}", request.getUsername());
             throw new CustomException(ErrorCode.LOGIN_FAILED);
         }
     }
@@ -112,9 +119,11 @@ public class AuthService {
                             .socialType(SocialType.FIREBASE)
                             .socialId(uid)
                             .build();
+                    log.info("[FirebaseLogin] New social user created. username={}", username);
                     return userRepository.save(newUser);
                 });
 
+        log.info("[FirebaseLogin] Success. userId={}", user.getId());
         return generateTokenResponse(user);
     }
 
@@ -122,6 +131,7 @@ public class AuthService {
     public AuthTokens refresh(String refreshToken) {
         // 토큰 유효성 검사
         if (refreshToken == null || !jwtTokenProvider.validateToken(refreshToken)) {
+            log.warn("[RefreshToken] Invalid token provided.");
             throw new CustomException(ErrorCode.INVALID_TOKEN, "유효하지 않은 리프레시 토큰입니다.");
         }
 
@@ -131,6 +141,7 @@ public class AuthService {
         // Redis 비교
         String storedToken = refreshTokenService.getByUserId(userId);
         if (storedToken == null || !storedToken.equals(refreshToken)) {
+            log.warn("[RefreshToken] Token mismatch or not found in Redis. userId={}", userId);
             refreshTokenService.delete(userId);
             throw new CustomException(ErrorCode.INVALID_TOKEN, "리프레시 토큰이 만료되었거나 일치하지 않습니다.");
         }
@@ -140,6 +151,7 @@ public class AuthService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // 토큰 재발급 (Rotation)
+        log.info("[RefreshToken] Success. Tokens rotated for userId={}", userId);
         return generateTokenResponse(user);
     }
 
