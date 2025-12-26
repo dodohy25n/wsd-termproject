@@ -122,11 +122,14 @@ class ReviewControllerTest extends BaseIntegrationTest {
                 mockMvc.perform(post("/api/stores/" + storeId + "/reviews")
                                 .header(HttpHeaders.AUTHORIZATION, customerToken)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request1)));
+                                .content(objectMapper.writeValueAsString(request1)))
+                                .andExpect(status().isCreated()); // Ensure success
+
                 mockMvc.perform(post("/api/stores/" + storeId + "/reviews")
-                                .header(HttpHeaders.AUTHORIZATION, customerToken)
+                                .header(HttpHeaders.AUTHORIZATION, otherCustomerToken)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(request2)));
+                                .content(objectMapper.writeValueAsString(request2)))
+                                .andExpect(status().isCreated()); // Ensure success
 
                 // when & then
                 mockMvc.perform(get("/api/stores/" + storeId + "/reviews"))
