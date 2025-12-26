@@ -14,7 +14,7 @@
 ### 주요 기능
 
 1. **인증/인가**: JWT (Access/Refresh + RRT), OAuth2 (Kakao/Google), Firebase Auth, RBAC (Role-Based Access Control)
-2. **사용자 관리**: 학생(대학 인증), 점주(사업자 인증), 관리자 등 역할별 프로필 관리
+2. **사용자 관리**: 학생, 점주, 관리자 등 역할별 프로필 관리
 3. **상점/상품**: 점주의 상점/메뉴 CRUD, 위치 기반/카테고리별 검색
 4. **리뷰/즐겨찾기**: 실사용자 리뷰 작성, 단골 등록 및 통계 제공
 5. **쿠폰 시스템**: 점주가 발행하고 고객이 발급/사용하는 할인 쿠폰 (재고/유효기간 관리)
@@ -95,7 +95,7 @@ java -jar build/libs/wsd-termproject-0.0.1-SNAPSHOT.jar
 배포 시에는 GitHub Secrets를 통해 관리됩니다.
 
 | 변수명 | 설명 | 비고 |
-| :--- | :--- | :--- |
+| :--- | :--- | :-- |
 | `DB_ROOT_PASSWORD` | MySQL Root 비밀번호 | |
 | `DB_USER` | MySQL 애플리케이션 계정 | |
 | `DB_PASSWORD` | MySQL 애플리케이션 비번 | |
@@ -103,7 +103,7 @@ java -jar build/libs/wsd-termproject-0.0.1-SNAPSHOT.jar
 | `GOOGLE_CLIENT_ID` | Google OAuth ID | |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth Secret | |
 | `KAKAO_CLIENT_ID` | Kakao OAuth ID | |
-| `FIREBASE_KEY_PATH` | Firebase 키 경로 | 배포 시 자동 생성됨 |
+| `FIREBASE_KEY_PATH` | Firebase 키 경로 | |
 ---
 
 ## 5. 배포 주소 및 URL
@@ -113,14 +113,32 @@ java -jar build/libs/wsd-termproject-0.0.1-SNAPSHOT.jar
 본 프로젝트는 학교 JCloud 인프라에 배포되었습니다.
 CI/CD 파이프라인(GitHub Actions)을 통해 메인 브랜치 푸시 시 자동 배포됩니다.
 
-*   **배포 URL**: `http://113.198.66.68:13233` (외부 접속용)
-*   **API 문서 (Swagger UI)**: [http://113.198.66.68:13233/swagger-ui/index.html](http://113.198.66.68:13233/swagger-ui/index.html)
-*   **Health Check**: [http://113.198.66.68:13233/health](http://113.198.66.68:13233/health)
+*   **배포 URL**: [http://175.123.55.182:3210](http://113.198.66.68:13233/swagger-ui/index.html)
+*   **API 문서 (Swagger UI)**: [http://175.123.55.182:3210/docs](http://113.198.66.68:13233/swagger-ui/index.html)
+*   **Health Check**: [http://175.123.55.182:3210/health](http://113.198.66.68:13233/health)
 
-### 5.2. 배포 아키텍처
+### 5.2. 배포 아키텍처 및 CI/CD
 
-*   **GitHub Actions**: Build → Docker Hub Push → JCloud SSH Deploy
-*   **Docker Compose**: Spring Boot, MySQL, Redis 컨테이너 오케스트레이션
+#### 인프라 아키텍처
+*   **Container Request**: GitHub Actions가 코드를 빌드하고 Docker Image를 생성하여 Docker Hub에 Push합니다.
+*   **Deploy Trigger**: 배포 서버(JCloud)에 SSH로 접속하여 최신 이미지를 Pull 받고 컨테이너를 재시작합니다.
+*   **Service Orchestration**: `docker-compose`를 사용하여 Spring Boot 앱, MySQL, Redis를 하나의 네트워크로 관리합니다.
+*   **Auto Healing**: `restart: always` 정책을 적용하여 서버 재부팅이나 예기치 않은 종료 시 컨테이너가 자동으로 복구되도록 설정했습니다.
+
+#### CI/CD 파이프라인 (GitHub Actions)
+| 단계 | 설명 |
+| :--- | :--- |
+| **CI (Continuous Integration)** | main 브랜치 Push 및 PR 시 트리거 |
+| - Test | Gradle 기반 유닛/통합 테스트 수행 (Redis 서비스 컨테이너 활용) |
+| - Build | 애플리케이션 빌드 검증 |
+| **CD (Continuous Deployment)** | main 브랜치 Push 시에만 트리거 |
+| - Login | Docker Hub 로그인 |
+| - Push | Docker Image 빌드 및 태깅(latest) 후 레지스트리 전송 |
+| - Deploy | JCloud 서버에 SSH 접속 -> `docker-compose pull` -> `up -d` 실행 |
+
+#### 배포 환경 (Docker)
+*   **Base Image**: `eclipse-temurin:17-jre-jammy`
+*   **Multi-stage Build**: 빌드(Gradle)와 실행(JRE) 단계를 분리하여 이미지 크기를 최적화했습니다.
 
 ---
 
@@ -284,51 +302,64 @@ CI/CD 파이프라인(GitHub Actions)을 통해 메인 브랜치 푸시 시 자�
 ### 성능 최적화
 
 1.  **데이터베이스 인덱싱**
-    - `store(name)`, `review(store_id)` 등 `WHERE` 조건이나 `JOIN`에 빈번히 사용되는 컬럼에 인덱스를 적용하여 조회 속도를 개선했습니다.
+    - `User` 엔티티의 `username`, `email` 컬럼에 `@Column(unique = true)`를 적용하여 중복 방지 및 조회 성능을 보장합니다.
+    - `Store` 엔티티의 `name` 필드에 `@Index`를 적용하여 상점 이름 검색 성능을 최적화했습니다.
 
 2.  **페이지네이션**
-    - 대량 데이터 조회 API(상점, 리뷰, 사용자 등)에 `Pageable`을 적용하여 한번에 많은 데이터를 로딩하지 않도록 메모리 사용을 최적화했습니다.
+    - 상점, 리뷰 등 대량의 데이터가 예상되는 조회 API에 `Pageable`을 적용하여 메모리 효율성을 확보하고 응답 속도를 개선했습니다.
 
-3.  **N+1 문제 해결**
-    - `@EntityGraph` 및 `FetchType.LAZY`를 적절히 사용하여 연관 엔티티 조회 시 발생하는 N+1 문제를 방지했습니다.
+3.  **지연 로딩 (Lazy Loading)**
+    - 모든 연관관계(`@ManyToOne`, `@OneToOne`)에 `FetchType.LAZY`를 적용하여 불필요한 연관 엔티티의 즉시 로딩을 방지하고 N+1 발생 가능성을 최소화했습니다.
 
 4.  **트랜잭션 최적화**
-    - 단순 조회 로직에는 `@Transactional(readOnly = true)`를 적용하여 Dirty Checking을 생략, 메모리 및 CPU 자원을 절약했습니다.
+    - 모든 Service의 단순 조회 로직에는 `@Transactional(readOnly = true)`를 적용하여 영속성 컨텍스트의 Dirty Checking(변경 감지)을 생략, 메모리 및 CPU 자원을 절약했습니다.
 
 5.  **Redis 캐싱**
-    - Refresh Token 및 Rate Limit 정보와 같이 빈번하게 읽고 쓰이는 데이터는 In-Memory DB인 Redis에서 관리하여 DB 부하를 줄였습니다.
+    - Refresh Token 저장소로 In-Memory DB인 Redis를 사용하여 빠른 응답 속도를 보장하고 DB 부하를 줄였습니다.
 
 ### 보안 구현 (Security)
 
 1.  **JWT & RTR (Refresh Token Rotation)**
-    - Access Token은 Body로, Refresh Token은 **HttpOnly Secure Cookie**로 전달하여 XSS 공격을 방지했습니다.
-    - 토큰 갱신 시 Refresh Token도 함께 재발급(Rotation)하여 탈취된 토큰의 재사용을 영구적으로 차단합니다.
+    - Access Token은 Body로, Refresh Token은 **HttpOnly Secure Cookie**로 전달하여 XSS 공격 위험을 낮췄습니다.
+    - 토큰 갱신 시 Refresh Token도 함께 재발급(Rotation)하여, 만약 탈취되더라도 이전 토큰을 무효화하여 재사용을 차단합니다.
 
-2.  **레이트 리밋 (Rate Limiting)**
-    - **Bucket4j**를 도입하여 IP당 분당 100회로 요청을 제한, DDoS 공격 및 무분별한 API 호출로부터 서버를 보호합니다.
+2.  **입력값 검증 (Validation)**
+    - DTO에서 `@NotBlank`, `@Email` 등의 Bean Validation 어노테이션을 사용하여 입력값을 1차로 검증합니다.
+    - 검증 실패 시 `GlobalExceptionHandler`가 예외를 포착하여 상세한 필드별 에러 리스트를 JSON으로 반환합니다.
 
-3.  **패스워드 암호화**
+3.  **커스텀 예외 핸들링**
+    - `AuthenticationEntryPoint`와 `AccessDeniedHandler`를 구현하여 인증/인가 실패 시 표준화된 JSON 에러 포맷(`CommonResponse`)을 반환합니다.
+
+4.  **레이트 리밋 (Rate Limiting)**
+    - **Bucket4j**를 인터셉터 단에서 사용하여 IP당 분당 100회로 요청을 제한, 공격적인 트래픽을 차단합니다.
+
+5.  **패스워드 암호화**
     - `BCryptPasswordEncoder`를 사용하여 사용자 비밀번호를 안전하게 해시 암호화하여 저장합니다.
-
 ---
 
 ## 11. 한계와 개선 계획
 
 ### 현재의 한계
 
-1.  **동기적 처리**: 쿠폰 발급 등 높은 트래픽이 예상되는 로직이 동기(Synchronous) 방식으로 구현되어 있어 대량의 요청 시 병목 현상 발생 가능
-2.  **단순 검색**: MySQL `LIKE` 쿼리를 사용한 단순 검색으로, 대용량 데이터 환경에서의 검색 성능 저하 우려
-3.  **단일 API 서버**: 트래픽 증가 시 단일 서버 구조로 인한 확장의 한계 (Scale-up 의존)
+1.  **배포 시 다운타임 발생**: 현재의 `docker-compose down -> up` 배포 방식은 컨테이너 재시작 시간 동안 서비스 중단이 발생합니다.
+2.  **인메모리 레이트 리밋**: Rate Limit 정보가 각 인스턴스의 메모리(`ConcurrentHashMap`)에 저장되어, 다중 서버 환경에서는 제한이 공유되지 않는 한계가 있습니다.
+3.  **단일 DB 의존성**: 읽기/쓰기 트래픽이 MySQL 단일 인스턴스에 집중되어 있어 대규모 트래픽 발생 시 병목이 생길 수 있습니다.
+4.  **동기적 처리 구조**: 쿠폰 발급 등 트래픽이 몰리는 로직이 동기식으로 구현되어 있어 응답 지연 가능성이 있습니다.
 
 ### 향후 개선 계획
 
-1.  **비동기/이벤트 기반 아키텍처 도입**
-    - 쿠폰 발급 요청을 Kafka/RabbitMQ 등 메시지 큐로 처리하여 동시성 제어 및 처리량 증대
+1.  **무중단 배포 도입**
+    - Nginx를 리버스 프록시로 두고 Blue/Green 배포 전략을 적용하여 배포 중 서비스 중단을 제거할 예정입니다.
 
-2.  **모니터링 & 로깅 시스템 고도화**
-    - Prometheus + Grafana 도입으로 서버 메트릭 시각화
-    - ELK Stack (Elasticsearch, Logstash, Kibana) 도입으로 로그 중앙화
+2.  **비동기/이벤트 기반 아키텍처**
+    - 쿠폰 발급 요청 등을 Kafka/RabbitMQ 메시지 큐로 버퍼링하여 처리량(Throughput)을 증대시키고 시스템 결합도를 낮출 예정입니다.
 
-3.  **CI/CD 자동화 및 오케스트레이션**
-    - GitHub Actions 파이프라인 고도화 (자동 테스트 및 배포)
-    - Kubernetes(k8s) 도입으로 컨테이너 오케스트레이션 및 오토스케일링 구현
+3.  **Redis 기반 분산 레이트 리밋**
+    - Bucket4j의 저장소를 Redis로 확장하여 분산 환경에서도 정확한 요청 제한을 구현할 예정입니다.
+
+4.  **검색 성능 고도화**
+    - MySQL Full-Text Index 또는 Elasticsearch 도입을 통해 검색 성능 및 정확도 개선.
+
+5.  **모니터링 & 로깅 (Observability)**
+    - Prometheus + Grafana를 도입하여 JVM, Connection Pool 상태를 시각화.
+    - ELK Stack을 통해 분산 로깅 환경 구축 및 에러 추적 용이성 확보.
