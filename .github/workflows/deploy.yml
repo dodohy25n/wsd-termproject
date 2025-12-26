@@ -54,7 +54,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
 
-          source: "docker-compose.prod.yml"
+          source: "docker-compose.prod.yml,logstash"
           target: "/home/${{ secrets.SERVER_USER }}/wsd"
 
       - name: Execute Remote Deploy
