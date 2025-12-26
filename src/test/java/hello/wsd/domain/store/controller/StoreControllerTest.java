@@ -127,17 +127,6 @@ class StoreControllerTest extends BaseIntegrationTest {
                                 .content(objectMapper.writeValueAsString(createRequest)))
                                 .andReturn().getResponse().getContentAsString();
 
-                // Extract Store ID (Assuming standard response structure)
-                // Note: For robustness, we might want to parse JSON properly, but simple string
-                // manipulation or json path works for integration test if structure is known.
-                // Or better, capture the ID from the service call if possible, but here we
-                // integration test the API.
-                // Let's rely on the fact that result returns data as Long.
-
-                // Actually, let's just create store using service directly to get ID for update
-                // test?
-                // No, keep it pure integration via API if possible, or mix.
-                // Let's parse the response.
                 Long storeId = objectMapper.readTree(responseContent).path("data").asLong();
 
                 UpdateStoreRequest updateRequest = UpdateStoreRequest.builder()

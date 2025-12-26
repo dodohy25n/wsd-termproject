@@ -1,6 +1,8 @@
 // src/main/java/hello/wsd/config/SecurityConfig.java
 package hello.wsd.security.config;
 
+import hello.wsd.security.handler.CustomAccessDeniedHandler;
+import hello.wsd.security.handler.CustomAuthenticationEntryPoint;
 import hello.wsd.security.handler.OAuth2LoginSuccessHandler;
 import hello.wsd.security.service.CustomOAuth2UserService;
 import hello.wsd.security.jwt.JwtFilter;
@@ -31,6 +33,8 @@ public class SecurityConfig {
         private final JwtFilter jwtFilter;
         private final CustomOAuth2UserService customOAuth2UserService;
         private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+        private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+        private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
         @Bean
         public PasswordEncoder passwordEncoder() {
@@ -84,8 +88,11 @@ public class SecurityConfig {
                 // 경로별 인가 작업
                 http
                                 .authorizeHttpRequests((auth) -> auth
-                                                .requestMatchers("/api/auth/**", "/reissue", "/docs", "/swagger-ui/**", "/v3/api-docs/**", "/health").permitAll()
-                                                .requestMatchers(HttpMethod.GET, "/api/stores/**", "/api/items/**").permitAll()
+                                                .requestMatchers("/api/auth/**", "/reissue", "/docs", "/swagger-ui/**",
+                                                                "/v3/api-docs/**", "/health")
+                                                .permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/stores/**", "/api/items/**")
+                                                .permitAll()
                                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                                 .anyRequest().authenticated());
 
@@ -95,6 +102,11 @@ public class SecurityConfig {
                                 )
                                 .successHandler(oAuth2LoginSuccessHandler) // 로그인 성공 시 핸들러
                 );
+
+                // 예외 처리 핸들러 등록
+                http.exceptionHandling(exception -> exception
+                                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                                .accessDeniedHandler(customAccessDeniedHandler));
 
                 http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +27,12 @@ public abstract class BaseIntegrationTest {
     @Autowired
     protected hello.wsd.domain.user.repository.UserRepository userRepository;
 
-    @org.springframework.boot.test.mock.mockito.MockBean
+    @MockitoBean
     protected hello.wsd.security.service.FirebaseAuthService firebaseAuthService;
 
-    @org.springframework.boot.test.mock.mockito.MockBean
+    @MockitoBean
     protected hello.wsd.domain.user.service.RefreshTokenService refreshTokenService;
 
-    @org.springframework.boot.test.mock.mockito.MockBean
+    @MockitoBean
     protected org.springframework.security.oauth2.client.registration.ClientRegistrationRepository clientRegistrationRepository;
 }
